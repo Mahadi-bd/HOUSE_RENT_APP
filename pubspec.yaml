@@ -1,0 +1,61 @@
+name: rent_solution
+description: Rent Solution - rental management for small landlords. Brand LIFE EASY.
+publish_to: none
+version: 0.3.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+# Versions are left open on purpose (no internet where this file was written). After the first
+# successful `flutter pub get`, COMMIT pubspec.lock so every build uses the same versions.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_riverpod: any
+  go_router: any
+  drift: any
+  sqlite3: any
+  path: any
+  path_provider: any
+  flutter_secure_storage: any
+  cryptography: any
+  crypto: any
+  firebase_core: any
+  firebase_auth: any
+  cloud_firestore: any
+  google_sign_in: any
+  local_auth: any
+  intl: any
+  logger: any
+  pdf: any
+  printing: any
+  url_launcher: any
+  image_picker: any
+  app_links: any
+  flutter_tesseract_ocr: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  build_runner: any
+  drift_dev: any
+  very_good_analysis: any
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/brand/
+    - assets/fonts/
+    - assets/tessdata/
+    - assets/tessdata_config.json
+
+# Encrypted SQLite (SQLite3MultipleCiphers) for the sqlite3 package.
+hooks:
+  user_defines:
+    sqlite3:
+      source: sqlite3mc

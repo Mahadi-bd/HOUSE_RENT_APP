@@ -1,0 +1,16 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+formatter:
+  page_width: 100
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "lib/core/localization/generated/**"
+    - "lib/firebase_options.dart"
+
+linter:
+  rules:
+    lines_longer_than_80_chars: false
+    public_member_api_docs: true
