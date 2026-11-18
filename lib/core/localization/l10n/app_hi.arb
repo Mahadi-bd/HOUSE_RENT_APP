@@ -1,0 +1,438 @@
+{
+  "@@locale": "hi",
+  "appName": "Rent Solution",
+  "welcomeTitle": "Rent Solution में आपका स्वागत है",
+  "chooseLanguageHint": "आप कभी भी सेटिंग्स में भाषा बदल सकते हैं।",
+  "languageLabel": "भाषा",
+  "languageEnglish": "English",
+  "languageBengali": "বাংলা",
+  "languageHindi": "हिन्दी",
+  "signInWithGoogle": "गूगल से साइन इन करें",
+  "signInWithEmail": "ईमेल लिंक से साइन इन करें",
+  "tabDashboard": "डैशबोर्ड",
+  "tabTenants": "किरायेदार",
+  "tabPayments": "भुगतान",
+  "tabReports": "रिपोर्ट",
+  "tabSettings": "सेटिंग्स",
+  "addTenant": "किरायेदार जोड़ें",
+  "recordPayment": "भुगतान दर्ज करें",
+  "generateReceipt": "रसीद बनाएं",
+  "roleOwner": "मालिक",
+  "roleAdmin": "एडमिन",
+  "roleManager": "मैनेजर",
+  "roleCaretaker": "केयरटेकर",
+  "roleTenant": "किरायेदार",
+  "emptyTenantsTitle": "अभी कोई किरायेदार नहीं",
+  "emptyTenantsMessage": "किराया दर्ज करने के लिए पहला किरायेदार जोड़ें।",
+  "signOut": "साइन आउट",
+  "createOrgTitle": "अपना किराया व्यवसाय सेट करें",
+  "createOrgHint": "बिल और रसीद पर दिखाने के लिए नाम लिखें, जैसे आपकी प्रॉपर्टी या कंपनी का नाम।",
+  "orgNameLabel": "व्यवसाय या प्रॉपर्टी का नाम",
+  "createOrgButton": "बनाएं और आगे बढ़ें",
+  "emailLabel": "ईमेल पता",
+  "sendEmailLink": "साइन-इन लिंक भेजें",
+  "emailLinkSent": "हमने आपके ईमेल पर साइन-इन लिंक भेजा है। ईमेल खोलें, पूरा लिंक कॉपी करें और नीचे पेस्ट करें।",
+  "pasteLinkLabel": "ईमेल से लिंक यहाँ पेस्ट करें",
+  "completeEmailSignIn": "साइन इन पूरा करें",
+  "errorSignIn": "साइन इन नहीं हुआ। इंटरनेट जाँचें और फिर कोशिश करें।",
+  "errorRequired": "कृपया यह खाना भरें।",
+  "errorGeneric": "कुछ गड़बड़ हो गई। कृपया फिर कोशिश करें।",
+  "signedInAs": "{role} के रूप में साइन इन",
+  "@signedInAs": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardHint": "आपकी आय, बकाया और रिमाइंडर यहाँ दिखेंगे।",
+  "reportsEmptyMessage": "भुगतान दर्ज करने के बाद रिपोर्ट यहाँ दिखेगी।",
+  "paymentsEmptyTitle": "अभी कोई भुगतान नहीं",
+  "paymentsEmptyMessage": "पहला भुगतान दर्ज करें, वह यहाँ दिखेगा।",
+  "noAccessTitle": "आपका एक्सेस रुका हुआ है",
+  "noAccessMessage": "एक्सेस वापस पाने के लिए मालिक या एडमिन से कहें।",
+  "tabHome": "होम",
+  "tabMyPayments": "मेरे भुगतान",
+  "tabMyTickets": "मेरे टिकट",
+  "tabProfile": "प्रोफ़ाइल",
+  "tabTickets": "टिकट",
+  "ticketsEmptyTitle": "अभी कोई टिकट नहीं",
+  "ticketsEmptyMessage": "मरम्मत के अनुरोध यहाँ दिखेंगे।",
+  "accountTooltip": "खाता और भाषा",
+  "save": "सहेजें",
+  "cancel": "रद्द करें",
+  "done": "ठीक है",
+  "addCharge": "अतिरिक्त शुल्क जोड़ें",
+  "addProperty": "प्रॉपर्टी जोड़ें",
+  "addUnit": "यूनिट जोड़ें",
+  "propertiesTitle": "प्रॉपर्टी और यूनिट",
+  "noPropertiesTitle": "अभी कोई प्रॉपर्टी नहीं",
+  "noPropertiesMessage": "पहले प्रॉपर्टी जोड़ें, फिर उसकी यूनिट।",
+  "noUnitsYet": "अभी कोई यूनिट नहीं।",
+  "unitVacant": "खाली",
+  "unitOccupied": "किराए पर",
+  "unitMaintenance": "मरम्मत में",
+  "propertyName": "प्रॉपर्टी का नाम",
+  "propertyAddress": "पता",
+  "unitNumber": "यूनिट नंबर (जैसे A1)",
+  "unitRent": "मासिक किराया (৳)",
+  "unitLabel": "यूनिट {unit}",
+  "@unitLabel": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "dueAmount": "बकाया {amount}",
+  "@dueAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "advanceAmount": "अग्रिम {amount}",
+  "@advanceAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "allPaid": "सब चुकाया",
+  "tenantName": "किरायेदार का नाम",
+  "phoneLabel": "फ़ोन नंबर",
+  "unitPickLabel": "यूनिट",
+  "leaseStartLabel": "किराया शुरू होने की तारीख",
+  "monthlyRentLabel": "मासिक किराया (৳)",
+  "serviceChargeLabel": "सर्विस चार्ज (৳, वैकल्पिक)",
+  "saveTenant": "किरायेदार सहेजें",
+  "noVacantUnits": "कोई खाली यूनिट नहीं है। पहले प्रॉपर्टी और यूनिट जोड़ें।",
+  "goToProperties": "प्रॉपर्टी और यूनिट जोड़ें",
+  "balanceTitle": "हिसाब",
+  "balanceDue": "अभी चुकाना है",
+  "balanceAdvance": "अग्रिम चुकाया",
+  "monthByMonth": "महीने के अनुसार",
+  "paidOf": "{charged} में से {paid} चुकाया",
+  "@paidOf": {
+    "placeholders": {
+      "paid": {
+        "type": "String"
+      },
+      "charged": {
+        "type": "String"
+      }
+    }
+  },
+  "extraChargesTitle": "अतिरिक्त शुल्क (वैकल्पिक)",
+  "noExtraCharges": "कोई अतिरिक्त शुल्क नहीं।",
+  "paymentsTitle": "भुगतान",
+  "noPaymentsForTenant": "अभी कोई भुगतान नहीं।",
+  "amountLabel": "राशि (৳)",
+  "methodLabel": "भुगतान कैसे हुआ?",
+  "trxIdLabel": "ट्रांज़ैक्शन आईडी",
+  "noteLabel": "नोट (वैकल्पिक)",
+  "savePayment": "भुगतान सहेजें",
+  "methodCash": "नकद",
+  "methodBkash": "बिकाश",
+  "methodNagad": "नगद (Nagad)",
+  "methodRocket": "रॉकेट",
+  "methodBank": "बैंक",
+  "methodQr": "क्यूआर",
+  "paymentSavedTitle": "भुगतान सहेजा गया",
+  "receiptNumber": "रसीद {no}",
+  "@receiptNumber": {
+    "placeholders": {
+      "no": {
+        "type": "String"
+      }
+    }
+  },
+  "remainingAfter": "अभी चुकाना है: {amount}",
+  "@remainingAfter": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "advanceAfter": "अग्रिम चुकाया: {amount}",
+  "@advanceAfter": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "receiptShareSoon": "रसीद PDF और WhatsApp से भेजना अगले चरण में आएगा।",
+  "chargeOptionalHint": "अतिरिक्त शुल्क वैकल्पिक हैं। इस महीने जो लागू हो वही जोड़ें।",
+  "chargeKindLabel": "शुल्क का प्रकार",
+  "chargeMonthLabel": "महीना",
+  "chargeLabelHint": "किसलिए? (अन्य के लिए ज़रूरी)",
+  "saveCharge": "शुल्क सहेजें",
+  "chargeElectricity": "बिजली",
+  "chargeGas": "गैस",
+  "chargeWater": "पानी",
+  "chargeInternet": "इंटरनेट",
+  "chargeFine": "जुर्माना",
+  "chargeDamage": "नुकसान",
+  "chargeOther": "अन्य",
+  "errorInvalidAmount": "शून्य से ज़्यादा राशि लिखें, दशमलव के बाद अधिकतम 2 अंक, जैसे 1500 या 1500.50।",
+  "errorPhone": "10 से 15 अंकों का फ़ोन नंबर लिखें।",
+  "errorNoPermission": "आपके पास यह करने की अनुमति नहीं है।",
+  "errorDuplicateTrx": "यह ट्रांज़ैक्शन आईडी पहले से दर्ज है।",
+  "errorTrxRequired": "ट्रांज़ैक्शन आईडी लिखें।",
+  "errorUnitTaken": "इस यूनिट में पहले से किरायेदार है।",
+  "errorDuplicateUnit": "इस प्रॉपर्टी में यह यूनिट नंबर पहले से है।",
+  "errorPickUnit": "एक यूनिट चुनें।",
+  "recentPaymentsHint": "सबसे नए भुगतान पहले।",
+  "openProfile": "प्रोफ़ाइल खोलें",
+  "rcpTitle": "भुगतान रसीद",
+  "rcpNo": "रसीद नं.",
+  "rcpDate": "तारीख",
+  "rcpReceivedFrom": "जिससे प्राप्त",
+  "rcpUnit": "यूनिट",
+  "rcpForMonth": "किस महीने के लिए",
+  "rcpMethod": "भुगतान का तरीका",
+  "rcpTrx": "ट्रांज़ैक्शन आईडी",
+  "rcpAmount": "प्राप्त राशि",
+  "rcpBalance": "इस भुगतान के बाद बाकी",
+  "rcpAdvance": "अग्रिम चुकाया",
+  "rcpReceivedBy": "प्राप्तकर्ता",
+  "rcpAmended": "संशोधित (पहली बार जारी होने के बाद सुधारी गई)",
+  "rcpProprietor": "प्रोपराइटर",
+  "rcpSignature": "हस्ताक्षर",
+  "rcpThanks": "धन्यवाद।",
+  "shareReceipt": "रसीद शेयर करें (PDF)",
+  "printReceipt": "रसीद प्रिंट करें",
+  "receiptFontHint": "रसीद में बंगला लिखावट के लिए Noto Sans Bengali फ़ॉन्ट फ़ाइलें जोड़ें (README देखें)। तब तक रसीद अंग्रेज़ी में छपेगी।",
+  "receiptFailed": "रसीद नहीं बन सकी। फिर कोशिश करें।",
+  "businessDetails": "व्यवसाय की जानकारी",
+  "businessHint": "यह जानकारी हर रसीद के ऊपर छपेगी।",
+  "businessNameLabel": "व्यवसाय या कंपनी का नाम",
+  "ownerNameLabel": "मालिक का नाम",
+  "addressLabel": "पता",
+  "websiteLabel": "वेबसाइट (वैकल्पिक)",
+  "receiptFooterLabel": "रसीद के नीचे का नोट (वैकल्पिक)",
+  "businessSaved": "व्यवसाय की जानकारी सहेजी गई",
+  "errorEmail": "सही ईमेल पता लिखें।",
+  "confirmTitle": "अपने ईमेल से पुष्टि करें",
+  "confirmSent": "हमने {email} पर पुष्टि लिंक भेजा है। ईमेल खोलें, पूरा लिंक कॉपी करें और यहाँ पेस्ट करें।",
+  "@confirmSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmLinkLabel": "लिंक पेस्ट करें",
+  "confirmButton": "पुष्टि करें",
+  "confirmSending": "लिंक भेजा जा रहा है...",
+  "errorConfirmOffline": "इस बदलाव की पुष्टि के लिए इंटरनेट से जुड़ें।",
+  "errorConfirmLink": "यह लिंक सही नहीं है। सबसे नए ईमेल से पूरा लिंक कॉपी करें।",
+  "errorConfirmExpired": "पुष्टि का समय खत्म हो गया। फिर से शुरू करें।",
+  "errorConfirmAccount": "यह लिंक किसी दूसरे खाते का है।",
+  "errorConfirmGeneric": "पुष्टि नहीं हो सकी। फिर कोशिश करें।",
+  "editPayment": "भुगतान सुधारें",
+  "voidPayment": "भुगतान रद्द करें",
+  "removeCharge": "शुल्क हटाएं",
+  "removeExpense": "खर्च हटाएं",
+  "moveTenantOut": "किरायेदार को विदा करें",
+  "moveOutHint": "किरायेदार सूची से हट जाएगा और यूनिट खाली हो जाएगी। रिकॉर्ड 2 साल रखे जाएंगे।",
+  "reasonLabel": "कारण (ज़रूरी)",
+  "errorReasonRequired": "कारण लिखें।",
+  "paymentCorrected": "भुगतान सुधारा गया",
+  "paymentCancelled": "भुगतान रद्द हुआ",
+  "chargeRemoved": "शुल्क हटाया गया",
+  "expenseRemoved": "खर्च हटाया गया",
+  "tenantMovedOut": "किरायेदार विदा हुआ",
+  "editTenant": "किरायेदार संपादित करें",
+  "tenantSaved": "किरायेदार सहेजा गया",
+  "rentLockedHint": "भुगतान होने के बाद किराया नहीं बदला जा सकता। किराया बदलाव बाद में मासिक बिल से संभलेंगे।",
+  "leaseEndLabel": "किराया खत्म होने की तारीख (वैकल्पिक)",
+  "clearDate": "तारीख हटाएं",
+  "payTypeLabel": "यह भुगतान किसलिए है?",
+  "payTypeRent": "किराया और बकाया",
+  "payTypeUtility": "यूटिलिटी बिल",
+  "payTypeFine": "जुर्माना",
+  "payTypeDeposit": "डिपॉज़िट (जमा, किराया नहीं)",
+  "expensesTitle": "खर्च",
+  "addExpense": "खर्च जोड़ें",
+  "expenseCategoryLabel": "प्रकार",
+  "catRepair": "मरम्मत",
+  "catTax": "कर",
+  "catCommission": "कमीशन",
+  "catUtility": "यूटिलिटी",
+  "catSalary": "वेतन",
+  "catOther": "अन्य",
+  "monthFilterLabel": "महीना",
+  "monthTotal": "इस महीने का कुल: {amount}",
+  "@monthTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "noExpensesTitle": "इस महीने कोई खर्च नहीं",
+  "noExpensesMessage": "खर्च जोड़ें, वह यहाँ दिखेगा।",
+  "propertyLabel": "प्रॉपर्टी",
+  "spentOnLabel": "तारीख",
+  "saveExpense": "खर्च सहेजें",
+  "expenseSaved": "खर्च सहेजा गया",
+  "openExpenses": "खर्च",
+  "homeThisMonth": "इस महीने",
+  "homeYouOwe": "आपको देना है",
+  "homeYouPaidAdvance": "आपने अग्रिम चुकाया",
+  "homeNothingOwed": "आपको कुछ देना नहीं है।",
+  "profileSection": "मेरी जानकारी",
+  "leaseFrom": "किराया शुरू {date}",
+  "@leaseFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "onlyYourRecords": "आप केवल अपने रिकॉर्ड देख सकते हैं।",
+  "recoveryTitle": "आपका डेटा खुल नहीं रहा",
+  "recoveryExplain": "इस फ़ोन का डेटा ऐसी चाबी से बंद है जो अब उपलब्ध नहीं है। कुछ नहीं मिटाया गया और नई चाबी भी नहीं बनी, इसलिए आपका डेटा फ़ोन में सुरक्षित है।",
+  "recoveryStepsTitle": "क्या करें",
+  "recoveryStep1": "ऐप अनइंस्टॉल न करें और उसका स्टोरेज साफ़ न करें।",
+  "recoveryStep2": "सुविधा आने पर एन्क्रिप्टेड Google Drive बैकअप से रिस्टोर करें, या जिसने ऐप सेट किया उससे कहें।",
+  "recoveryStep3": "कुछ और करने से पहले इस स्क्रीन के साथ सपोर्ट से संपर्क करें।",
+  "aboutTitle": "परिचय",
+  "aboutDevelopedBy": "डेवलप और डिज़ाइन किया",
+  "aboutLicense": "मुफ़्त और ओपन सोर्स (MIT लाइसेंस)। कोई विज्ञापन नहीं, कोई सब्सक्रिप्शन नहीं।",
+  "aboutDeveloped": "डेवलप और डिज़ाइन किया",
+  "aboutVersion": "संस्करण {version}",
+  "openAbout": "LIFE EASY के बारे में",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "waReceiptMessage": "{business}: {month} के लिए {amount} प्राप्त हुए। रसीद नं. {receipt}। धन्यवाद।",
+  "sendWhatsApp": "WhatsApp से भेजें",
+  "whatsAppFailed": "WhatsApp खुल नहीं सका।",
+  "chooseLogo": "लोगो चुनें",
+  "useBuiltInLogo": "ऐप का लोगो इस्तेमाल करें",
+  "logoSaved": "लोगो बदला गया",
+  "@waReceiptMessage": {
+    "placeholders": {
+      "business": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "month": {
+        "type": "String"
+      },
+      "receipt": {
+        "type": "String"
+      }
+    }
+  },
+  "householdTitle": "घर के लोग",
+  "householdCount": "घर में कुल {count} लोग (किरायेदार समेत)",
+  "noHousehold": "अभी किसी को नहीं जोड़ा गया।",
+  "addMember": "व्यक्ति जोड़ें",
+  "memberType": "यह कौन है?",
+  "typeFamily": "परिवार का सदस्य",
+  "typeDomesticWorker": "घरेलू कामगार",
+  "typeDriver": "ड्राइवर",
+  "typeGuard": "गार्ड",
+  "typeOther": "अन्य",
+  "relationLabel": "रिश्ता (वैकल्पिक)",
+  "ageLabel": "उम्र (वैकल्पिक)",
+  "memberPhoneLabel": "फ़ोन (वैकल्पिक)",
+  "memberIdLabel": "पहचान पत्र नंबर (वैकल्पिक)",
+  "vaultOnlyField": "फ़ोन और पहचान पत्र नंबर केवल मालिक, एडमिन या वॉल्ट-अनुमति वाला स्टाफ सहेज सकता है।",
+  "memberSaved": "व्यक्ति जोड़ा गया",
+  "removeMember": "व्यक्ति हटाएं",
+  "memberRemoved": "व्यक्ति हटाया गया",
+  "errorNeedAge": "उम्र 0 से 120 के बीच होनी चाहिए।",
+  "sensitiveTitle": "संवेदनशील जानकारी",
+  "vaultLocked": "इसे केवल मालिक या एडमिन देख सकते हैं।",
+  "nidLabel": "एनआईडी नंबर",
+  "permAddressLabel": "स्थायी पता",
+  "emergencyLabel": "आपातकालीन संपर्क",
+  "editSensitive": "संवेदनशील जानकारी संपादित करें",
+  "sensitiveSaved": "संवेदनशील जानकारी सहेजी गई",
+  "errorNid": "एनआईडी नंबर 10, 13 या 17 अंकों का होना चाहिए।",
+  "notSet": "दर्ज नहीं",
+  "documentsTitle": "कागज़ात",
+  "noDocuments": "अभी कोई कागज़ नहीं।",
+  "addDocument": "कागज़ जोड़ें",
+  "docNid": "एनआईडी कार्ड",
+  "docLease": "किराया अनुबंध",
+  "docPhoto": "किरायेदार की फ़ोटो",
+  "docOther": "अन्य",
+  "takePhoto": "कैमरा",
+  "fromGallery": "गैलरी से चुनें",
+  "viewDocument": "देखें",
+  "removeDocument": "कागज़ हटाएं",
+  "documentSaved": "दस्तावेज़ सहेजा गया",
+  "documentRemoved": "कागज़ हटाया गया",
+  "errorTampered": "यह फ़ाइल बदली या खराब हो गई है, इसलिए दिखाई नहीं जा सकती।",
+  "pdfNoPreview": "PDF सुरक्षित रखा गया। यहाँ प्रीव्यू उपलब्ध नहीं।",
+  "@householdCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "memberCount": "घर में कुल {count} लोग (किरायेदार सहित)",
+  "memberTypeFamily": "परिवार",
+  "memberTypeDomesticWorker": "घरेलू कर्मचारी",
+  "memberTypeDriver": "ड्राइवर",
+  "memberTypeGuard": "गार्ड",
+  "memberTypeOther": "अन्य",
+  "memberTypeLabel": "यह कौन है?",
+  "memberName": "नाम",
+  "memberRelation": "रिश्ता (वैकल्पिक)",
+  "memberAge": "उम्र (वैकल्पिक)",
+  "memberNote": "नोट (वैकल्पिक)",
+  "memberPhoneVault": "फ़ोन (निजी)",
+  "memberIdVault": "आईडी नंबर (निजी)",
+  "memberAdded": "व्यक्ति जोड़ा गया",
+  "vaultTitle": "निजी जानकारी",
+  "nidNumberLabel": "एनआईडी नंबर",
+  "permanentAddressLabel": "स्थायी पता",
+  "emergencyContactLabel": "आपातकालीन संपर्क",
+  "editVault": "निजी जानकारी संपादित करें",
+  "vaultSaved": "निजी जानकारी सहेजी गई",
+  "documentAdded": "कागज़ सहेजा गया (एन्क्रिप्टेड)",
+  "pickFromGallery": "गैलरी",
+  "pickFile": "स्रोत चुनें",
+  "errorVaultKey": "इस फ़ोन में निजी कागज़ों की चाबी नहीं है। कुछ नहीं मिटा। रिकवरी के चरण देखें।",
+  "errorFileTooBig": "फ़ाइल बहुत बड़ी है (अधिकतम 10 MB)।",
+  "errorPersonInvalid": "नाम, फ़ोन और आईडी नंबर जाँचें।",
+  "pdfSavedShare": "यह एक PDF है। शेयर करने पर शेयर मेनू खुलेगा।",
+  "@memberCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "scanNid": "एनआईडी कार्ड स्कैन करें",
+  "ocrReading": "कार्ड पढ़ा जा रहा है...",
+  "ocrReviewTitle": "एनआईडी की जानकारी जाँचें",
+  "ocrCompare": "ये फ़ोटो से पढ़ी गई हैं। सहेजने से पहले हर एक को कार्ड से मिलाएं और गलती सुधारें।",
+  "ocrNidMissing": "एनआईडी नंबर नहीं मिला। कार्ड देखकर लिखें।",
+  "ocrNameLabel": "कार्ड पर नाम",
+  "ocrFatherLabel": "पिता",
+  "ocrMotherLabel": "माता",
+  "ocrDobLabel": "जन्म तारीख",
+  "ocrConfirm": "पुष्टि करके सहेजें",
+  "ocrFailed": "फ़ोटो पढ़ी नहीं जा सकी। साफ़ फ़ोटो लें या हाथ से लिखें।",
+  "ocrSaved": "एनआईडी सहेजी गई",
+  "scanPayment": "भुगतान के स्क्रीनशॉट से पढ़ें",
+  "ocrCheckValues": "सहेजने से पहले राशि और ट्रांज़ैक्शन आईडी जाँचें।"
+}

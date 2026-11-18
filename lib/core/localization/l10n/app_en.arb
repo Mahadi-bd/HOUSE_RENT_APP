@@ -1,0 +1,438 @@
+{
+  "@@locale": "en",
+  "appName": "Rent Solution",
+  "welcomeTitle": "Welcome to Rent Solution",
+  "chooseLanguageHint": "You can change the language any time in Settings.",
+  "languageLabel": "Language",
+  "languageEnglish": "English",
+  "languageBengali": "বাংলা",
+  "languageHindi": "हिन्दी",
+  "signInWithGoogle": "Sign in with Google",
+  "signInWithEmail": "Sign in with an email link",
+  "tabDashboard": "Dashboard",
+  "tabTenants": "Tenants",
+  "tabPayments": "Payments",
+  "tabReports": "Reports",
+  "tabSettings": "Settings",
+  "addTenant": "Add Tenant",
+  "recordPayment": "Record Payment",
+  "generateReceipt": "Generate Receipt",
+  "roleOwner": "Owner",
+  "roleAdmin": "Admin",
+  "roleManager": "Manager",
+  "roleCaretaker": "Caretaker",
+  "roleTenant": "Tenant",
+  "emptyTenantsTitle": "No tenants yet",
+  "emptyTenantsMessage": "Add your first tenant to start recording rent.",
+  "signOut": "Sign out",
+  "createOrgTitle": "Set up your rental business",
+  "createOrgHint": "Enter the name you want on bills and receipts, for example your property or company name.",
+  "orgNameLabel": "Business or property name",
+  "createOrgButton": "Create and continue",
+  "emailLabel": "Email address",
+  "sendEmailLink": "Send sign-in link",
+  "emailLinkSent": "We sent a sign-in link to your email. Open your email, copy the full link, and paste it below.",
+  "pasteLinkLabel": "Paste the link from your email",
+  "completeEmailSignIn": "Finish signing in",
+  "errorSignIn": "Sign-in did not work. Check your internet connection and try again.",
+  "errorRequired": "Please fill in this field.",
+  "errorGeneric": "Something went wrong. Please try again.",
+  "signedInAs": "Signed in as {role}",
+  "@signedInAs": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardHint": "Your income, dues and reminders will appear here.",
+  "reportsEmptyMessage": "Reports will appear after you record payments.",
+  "paymentsEmptyTitle": "No payments yet",
+  "paymentsEmptyMessage": "Record the first payment to see it here.",
+  "noAccessTitle": "Your access is paused",
+  "noAccessMessage": "Ask the owner or an admin to restore your access.",
+  "tabHome": "Home",
+  "tabMyPayments": "My Payments",
+  "tabMyTickets": "My Tickets",
+  "tabProfile": "Profile",
+  "tabTickets": "Tickets",
+  "ticketsEmptyTitle": "No tickets yet",
+  "ticketsEmptyMessage": "Repair requests will appear here.",
+  "accountTooltip": "Account and language",
+  "save": "Save",
+  "cancel": "Cancel",
+  "done": "Done",
+  "addCharge": "Add Charge",
+  "addProperty": "Add Property",
+  "addUnit": "Add Unit",
+  "propertiesTitle": "Properties and units",
+  "noPropertiesTitle": "No properties yet",
+  "noPropertiesMessage": "Add your first property, then its units.",
+  "noUnitsYet": "No units yet.",
+  "unitVacant": "Vacant",
+  "unitOccupied": "Occupied",
+  "unitMaintenance": "Under maintenance",
+  "propertyName": "Property name",
+  "propertyAddress": "Address",
+  "unitNumber": "Unit number (for example A1)",
+  "unitRent": "Monthly rent (৳)",
+  "unitLabel": "Unit {unit}",
+  "@unitLabel": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "dueAmount": "Due {amount}",
+  "@dueAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "advanceAmount": "Advance {amount}",
+  "@advanceAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "allPaid": "All paid",
+  "tenantName": "Tenant name",
+  "phoneLabel": "Phone number",
+  "unitPickLabel": "Unit",
+  "leaseStartLabel": "Lease start date",
+  "monthlyRentLabel": "Monthly rent (৳)",
+  "serviceChargeLabel": "Service charge (৳, optional)",
+  "saveTenant": "Save Tenant",
+  "noVacantUnits": "There is no vacant unit. Add a property and a unit first.",
+  "goToProperties": "Add property and unit",
+  "balanceTitle": "Balance",
+  "balanceDue": "Still to pay",
+  "balanceAdvance": "Paid in advance",
+  "monthByMonth": "Month by month",
+  "paidOf": "Paid {paid} of {charged}",
+  "@paidOf": {
+    "placeholders": {
+      "paid": {
+        "type": "String"
+      },
+      "charged": {
+        "type": "String"
+      }
+    }
+  },
+  "extraChargesTitle": "Extra charges (optional)",
+  "noExtraCharges": "No extra charges.",
+  "paymentsTitle": "Payments",
+  "noPaymentsForTenant": "No payments yet.",
+  "amountLabel": "Amount (৳)",
+  "methodLabel": "How was it paid?",
+  "trxIdLabel": "Transaction ID",
+  "noteLabel": "Note (optional)",
+  "savePayment": "Save Payment",
+  "methodCash": "Cash",
+  "methodBkash": "bKash",
+  "methodNagad": "Nagad",
+  "methodRocket": "Rocket",
+  "methodBank": "Bank",
+  "methodQr": "QR",
+  "paymentSavedTitle": "Payment saved",
+  "receiptNumber": "Receipt {no}",
+  "@receiptNumber": {
+    "placeholders": {
+      "no": {
+        "type": "String"
+      }
+    }
+  },
+  "remainingAfter": "Still to pay: {amount}",
+  "@remainingAfter": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "advanceAfter": "Paid in advance: {amount}",
+  "@advanceAfter": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "receiptShareSoon": "Receipt PDF and WhatsApp sending come in the next step.",
+  "chargeOptionalHint": "Extra charges are optional. Add only what applies this month.",
+  "chargeKindLabel": "Type of charge",
+  "chargeMonthLabel": "Month",
+  "chargeLabelHint": "What is it for? (required for Other)",
+  "saveCharge": "Save Charge",
+  "chargeElectricity": "Electricity",
+  "chargeGas": "Gas",
+  "chargeWater": "Water",
+  "chargeInternet": "Internet",
+  "chargeFine": "Fine",
+  "chargeDamage": "Damage",
+  "chargeOther": "Other",
+  "errorInvalidAmount": "Enter an amount above zero with at most 2 decimals, for example 1500 or 1500.50.",
+  "errorPhone": "Enter a phone number with 10 to 15 digits.",
+  "errorNoPermission": "You do not have permission to do this.",
+  "errorDuplicateTrx": "This transaction ID was already recorded.",
+  "errorTrxRequired": "Enter the transaction ID.",
+  "errorUnitTaken": "This unit already has a tenant.",
+  "errorDuplicateUnit": "This unit number already exists in this property.",
+  "errorPickUnit": "Choose a unit.",
+  "recentPaymentsHint": "Newest payments first.",
+  "openProfile": "Open profile",
+  "rcpTitle": "PAYMENT RECEIPT",
+  "rcpNo": "Receipt no.",
+  "rcpDate": "Date",
+  "rcpReceivedFrom": "Received from",
+  "rcpUnit": "Unit",
+  "rcpForMonth": "For month",
+  "rcpMethod": "Payment method",
+  "rcpTrx": "Transaction ID",
+  "rcpAmount": "Amount received",
+  "rcpBalance": "Balance after this payment",
+  "rcpAdvance": "Paid in advance",
+  "rcpReceivedBy": "Received by",
+  "rcpAmended": "AMENDED (corrected after first issue)",
+  "rcpProprietor": "Proprietor",
+  "rcpSignature": "Signature",
+  "rcpThanks": "Thank you.",
+  "shareReceipt": "Share receipt (PDF)",
+  "printReceipt": "Print receipt",
+  "receiptFontHint": "For Bengali text on receipts, add the Noto Sans Bengali font files (see README). Until then receipts print in English.",
+  "receiptFailed": "The receipt could not be made. Try again.",
+  "businessDetails": "Business details",
+  "businessHint": "These details appear at the top of every receipt.",
+  "businessNameLabel": "Business or company name",
+  "ownerNameLabel": "Owner or proprietor name",
+  "addressLabel": "Address",
+  "websiteLabel": "Website (optional)",
+  "receiptFooterLabel": "Note at the bottom of receipts (optional)",
+  "businessSaved": "Business details saved",
+  "errorEmail": "Enter a valid email address.",
+  "confirmTitle": "Confirm with your email",
+  "confirmSent": "We sent a confirmation link to {email}. Open the email, copy the whole link, and paste it here.",
+  "@confirmSent": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmLinkLabel": "Paste the link",
+  "confirmButton": "Confirm",
+  "confirmSending": "Sending the link...",
+  "errorConfirmOffline": "Connect to the internet to confirm this change.",
+  "errorConfirmLink": "This link is not valid. Copy the whole link from the newest email.",
+  "errorConfirmExpired": "The confirmation expired. Start again.",
+  "errorConfirmAccount": "The link belongs to a different account.",
+  "errorConfirmGeneric": "Could not confirm. Try again.",
+  "editPayment": "Correct payment",
+  "voidPayment": "Cancel payment",
+  "removeCharge": "Remove charge",
+  "removeExpense": "Remove expense",
+  "moveTenantOut": "Move tenant out",
+  "moveOutHint": "The tenant is hidden and the unit becomes vacant. The records are kept for 2 years.",
+  "reasonLabel": "Reason (required)",
+  "errorReasonRequired": "Write the reason.",
+  "paymentCorrected": "Payment corrected",
+  "paymentCancelled": "Payment cancelled",
+  "chargeRemoved": "Charge removed",
+  "expenseRemoved": "Expense removed",
+  "tenantMovedOut": "Tenant moved out",
+  "editTenant": "Edit tenant",
+  "tenantSaved": "Tenant saved",
+  "rentLockedHint": "Rent cannot be changed after payments exist. Monthly bills will handle rent changes later.",
+  "leaseEndLabel": "Lease end date (optional)",
+  "clearDate": "Clear date",
+  "payTypeLabel": "What is this payment for?",
+  "payTypeRent": "Rent and dues",
+  "payTypeUtility": "Utility bill",
+  "payTypeFine": "Fine",
+  "payTypeDeposit": "Deposit (held, not rent)",
+  "expensesTitle": "Expenses",
+  "addExpense": "Add Expense",
+  "expenseCategoryLabel": "Category",
+  "catRepair": "Repair",
+  "catTax": "Tax",
+  "catCommission": "Commission",
+  "catUtility": "Utility",
+  "catSalary": "Salary",
+  "catOther": "Other",
+  "monthFilterLabel": "Month",
+  "monthTotal": "Total this month: {amount}",
+  "@monthTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "noExpensesTitle": "No expenses this month",
+  "noExpensesMessage": "Add an expense to see it here.",
+  "propertyLabel": "Property",
+  "spentOnLabel": "Date",
+  "saveExpense": "Save Expense",
+  "expenseSaved": "Expense saved",
+  "openExpenses": "Expenses",
+  "homeThisMonth": "This month",
+  "homeYouOwe": "You owe",
+  "homeYouPaidAdvance": "You paid in advance",
+  "homeNothingOwed": "You have nothing to pay.",
+  "profileSection": "My details",
+  "leaseFrom": "Lease from {date}",
+  "@leaseFrom": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "onlyYourRecords": "You can see only your own records.",
+  "recoveryTitle": "Your data cannot be opened",
+  "recoveryExplain": "The data on this phone is locked with a key that is no longer available. Nothing was deleted and no new key was made, so your data is still safe on the phone.",
+  "recoveryStepsTitle": "What to do",
+  "recoveryStep1": "Do not uninstall the app and do not clear its storage.",
+  "recoveryStep2": "Restore from your encrypted Google Drive backup when that feature is available, or ask the person who set up the app.",
+  "recoveryStep3": "Contact support with this screen before trying anything else.",
+  "aboutTitle": "About",
+  "aboutDevelopedBy": "Developed and designed by",
+  "aboutLicense": "Free and open source (MIT License). No ads, no subscription.",
+  "aboutDeveloped": "Developed and designed by",
+  "aboutVersion": "version {version}",
+  "openAbout": "About LIFE EASY",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "waReceiptMessage": "{business}: we received {amount} for {month}. Receipt no. {receipt}. Thank you.",
+  "sendWhatsApp": "Send on WhatsApp",
+  "whatsAppFailed": "WhatsApp could not be opened.",
+  "chooseLogo": "Choose logo",
+  "useBuiltInLogo": "Use built-in logo",
+  "logoSaved": "Logo updated",
+  "@waReceiptMessage": {
+    "placeholders": {
+      "business": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "month": {
+        "type": "String"
+      },
+      "receipt": {
+        "type": "String"
+      }
+    }
+  },
+  "householdTitle": "People in the home",
+  "householdCount": "{count} people in the home (including the tenant)",
+  "noHousehold": "No one added yet.",
+  "addMember": "Add person",
+  "memberType": "Who is this?",
+  "typeFamily": "Family member",
+  "typeDomesticWorker": "Domestic worker",
+  "typeDriver": "Driver",
+  "typeGuard": "Guard",
+  "typeOther": "Other",
+  "relationLabel": "Relation (optional)",
+  "ageLabel": "Age (optional)",
+  "memberPhoneLabel": "Phone (optional)",
+  "memberIdLabel": "ID number (optional)",
+  "vaultOnlyField": "Phone and ID number can be saved only by the Owner, an Admin, or staff with vault access.",
+  "memberSaved": "Person added",
+  "removeMember": "Remove person",
+  "memberRemoved": "Person removed",
+  "errorNeedAge": "Age must be between 0 and 120.",
+  "sensitiveTitle": "Sensitive details",
+  "vaultLocked": "Only the Owner or Admin can see this.",
+  "nidLabel": "NID number",
+  "permAddressLabel": "Permanent address",
+  "emergencyLabel": "Emergency contact",
+  "editSensitive": "Edit sensitive details",
+  "sensitiveSaved": "Sensitive details saved",
+  "errorNid": "The NID number must have 10, 13 or 17 digits.",
+  "notSet": "Not set",
+  "documentsTitle": "Documents",
+  "noDocuments": "No documents yet.",
+  "addDocument": "Add document",
+  "docNid": "NID card",
+  "docLease": "Lease agreement",
+  "docPhoto": "Tenant photo",
+  "docOther": "Other",
+  "takePhoto": "Camera",
+  "fromGallery": "Choose from gallery",
+  "viewDocument": "View",
+  "removeDocument": "Remove document",
+  "documentSaved": "Document saved",
+  "documentRemoved": "Document removed",
+  "errorTampered": "This file was changed or damaged and cannot be shown.",
+  "pdfNoPreview": "PDF saved safely. Preview is not available here.",
+  "@householdCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "memberCount": "{count} people in the home (including the tenant)",
+  "memberTypeFamily": "Family",
+  "memberTypeDomesticWorker": "Domestic worker",
+  "memberTypeDriver": "Driver",
+  "memberTypeGuard": "Guard",
+  "memberTypeOther": "Other",
+  "memberTypeLabel": "Who is this?",
+  "memberName": "Name",
+  "memberRelation": "Relation (optional)",
+  "memberAge": "Age (optional)",
+  "memberNote": "Note (optional)",
+  "memberPhoneVault": "Phone (private)",
+  "memberIdVault": "ID number (private)",
+  "memberAdded": "Person added",
+  "vaultTitle": "Private details",
+  "nidNumberLabel": "NID number",
+  "permanentAddressLabel": "Permanent address",
+  "emergencyContactLabel": "Emergency contact",
+  "editVault": "Edit private details",
+  "vaultSaved": "Private details saved",
+  "documentAdded": "Document saved (encrypted)",
+  "pickFromGallery": "Gallery",
+  "pickFile": "Choose source",
+  "errorVaultKey": "The key for private documents is missing on this phone. Nothing was deleted. See the recovery steps.",
+  "errorFileTooBig": "The file is too big (10 MB at most).",
+  "errorPersonInvalid": "Check the name, phone and ID number.",
+  "pdfSavedShare": "This is a PDF. Sharing it opens the share menu.",
+  "@memberCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "scanNid": "Scan NID card",
+  "ocrReading": "Reading the card...",
+  "ocrReviewTitle": "Check the NID details",
+  "ocrCompare": "These were read from the photo. Compare each one with the card and correct mistakes before saving.",
+  "ocrNidMissing": "The NID number was not found. Type it from the card.",
+  "ocrNameLabel": "Name on card",
+  "ocrFatherLabel": "Father",
+  "ocrMotherLabel": "Mother",
+  "ocrDobLabel": "Date of birth",
+  "ocrConfirm": "Confirm and save",
+  "ocrFailed": "The photo could not be read. Try a clearer photo or type the details.",
+  "ocrSaved": "NID saved",
+  "scanPayment": "Read from a payment screenshot",
+  "ocrCheckValues": "Check the amount and transaction ID before saving."
+}
