@@ -5,6 +5,9 @@ abstract final class BrandConfig {
   /// Brand name.
   static const companyName = 'LIFE EASY';
 
+  /// Compatibility name used by screens that describe the brand.
+  static const brandName = companyName;
+
   /// Developer and designer credit.
   static const developerName = 'MAHADI HASAN JEWEL';
 
