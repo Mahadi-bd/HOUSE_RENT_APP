@@ -154,3 +154,15 @@ final tenantDocumentsProvider =
   ref.watch(dataRevisionProvider);
   return (await ref.watch(documentsRepositoryProvider.future)).list(tenantId);
 });
+
+/// Archive entries waiting for restore or purge.
+final archiveEntriesProvider = FutureProvider.autoDispose<List<DeletedArchive>>((ref) async {
+  ref.watch(dataRevisionProvider);
+  return (await ref.watch(archiveRepositoryProvider.future)).list();
+});
+
+/// Legal records of a tenant.
+final legalRecordsProvider = FutureProvider.autoDispose.family<List<LegalRecord>, String>((ref, tenantId) async {
+  ref.watch(dataRevisionProvider);
+  return (await ref.watch(legalRecordsRepositoryProvider.future)).list(tenantId);
+});

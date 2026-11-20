@@ -9,6 +9,7 @@ import 'package:rent_solution/core/utils/async_value_x.dart';
 import 'package:rent_solution/core/utils/formatters_context.dart';
 import 'package:rent_solution/features/organization/data/organization_repository.dart';
 import 'package:rent_solution/features/payments/presentation/receipt_actions.dart';
+import 'package:rent_solution/features/police/presentation/police_actions.dart';
 import 'package:rent_solution/features/security/sensitive_actions.dart';
 import 'package:rent_solution/features/tenants/application/tenant_providers.dart';
 import 'package:rent_solution/features/tenants/presentation/household_section.dart';
@@ -34,6 +35,7 @@ class TenantProfileScreen extends ConsumerWidget {
     final canEditPayment = access?.can(Permission.paymentEdit) ?? false;
     final canDelete = access?.can(Permission.deleteAny) ?? false;
     final canEditTenant = access?.can(Permission.tenantWrite) ?? false;
+    final canPolice = access?.can(Permission.policeShare) ?? false;
     final fmt = context.fmt;
     final scheme = Theme.of(context).colorScheme;
 
@@ -41,12 +43,14 @@ class TenantProfileScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(tenant.dataOrNull?.name ?? ''),
         actions: [
-          if (tenant.dataOrNull != null && (canEditTenant || canDelete))
+          if (tenant.dataOrNull != null && (canEditTenant || canDelete || canPolice))
             PopupMenuButton<String>(
               onSelected: (value) async {
                 final row = tenant.dataOrNull!;
                 if (value == 'edit') {
                   context.push('${RouteNames.tenants}/$tenantId/edit');
+                } else if (value == 'police') {
+                  await shareTenantWithPolice(context, ref, tenantId);
                 } else if (value == 'out') {
                   final done = await moveTenantOutFlow(context, ref, row);
                   if (done && context.mounted) {
@@ -56,6 +60,7 @@ class TenantProfileScreen extends ConsumerWidget {
               },
               itemBuilder: (_) => [
                 if (canEditTenant) PopupMenuItem(value: 'edit', child: Text(t.editTenant)),
+                if (canPolice) PopupMenuItem(value: 'police', child: Text(t.policeForm)),
                 if (canDelete) PopupMenuItem(value: 'out', child: Text(t.moveTenantOut)),
               ],
             ),
