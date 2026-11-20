@@ -6,12 +6,16 @@ import 'package:rent_solution/data/repositories/household_repository.dart';
 import 'package:rent_solution/data/repositories/tenant_vault_repository.dart';
 import 'package:rent_solution/core/permissions/access_guard.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rent_solution/core/permissions/permission_matrix.dart';
 import 'package:rent_solution/core/security/audit_checkpoint.dart';
 import 'package:rent_solution/core/security/vault_crypto.dart';
 import 'package:rent_solution/core/storage/key_value_store.dart';
 import 'package:rent_solution/core/utils/async_value_x.dart';
 import 'package:rent_solution/data/local/open_database.dart';
+import 'package:rent_solution/data/repositories/archive_repository.dart';
 import 'package:rent_solution/data/repositories/charges_repository.dart';
+import 'package:rent_solution/data/repositories/legal_repositories.dart';
+import 'package:rent_solution/data/repositories/police_repository.dart';
 import 'package:rent_solution/data/repositories/documents_repository.dart';
 import 'package:rent_solution/data/repositories/expenses_repository.dart';
 import 'package:rent_solution/data/repositories/household_repository.dart';
@@ -204,4 +208,62 @@ final ocrRepositoryProvider = FutureProvider<OcrRepository>((ref) async {
     await ref.watch(documentsRepositoryProvider.future),
     await ref.watch(tenantVaultRepositoryProvider.future),
   );
+});
+
+/// The 2-year Deleted Items Archive.
+final archiveRepositoryProvider = FutureProvider<ArchiveRepository>((ref) async {
+  final guard = ref.watch(accessGuardProvider);
+  return ArchiveRepository(
+    await ref.watch(appDatabaseProvider.future),
+    guard,
+    await ref.watch(writeContextProvider.future),
+    await ref.watch(paymentsRepositoryProvider.future),
+    await getApplicationDocumentsDirectory(),
+  );
+});
+
+/// Legal notices and NOCs.
+final legalRecordsRepositoryProvider = FutureProvider<LegalRecordsRepository>((ref) async {
+  final guard = ref.watch(accessGuardProvider);
+  return LegalRecordsRepository(
+    await ref.watch(appDatabaseProvider.future),
+    guard,
+    await ref.watch(writeContextProvider.future),
+    await ref.watch(documentsRepositoryProvider.future),
+  );
+});
+
+/// Legal erasure of a tenant's personal data.
+final legalErasureRepositoryProvider = FutureProvider<LegalErasureRepository>((ref) async {
+  final guard = ref.watch(accessGuardProvider);
+  return LegalErasureRepository(
+    await ref.watch(appDatabaseProvider.future),
+    guard,
+    await ref.watch(writeContextProvider.future),
+    ref.watch(confirmationServiceProvider),
+    await ref.watch(archiveRepositoryProvider.future),
+  );
+});
+
+/// Police form data and consent log.
+final policeFormRepositoryProvider = FutureProvider<PoliceFormRepository>((ref) async {
+  final guard = ref.watch(accessGuardProvider);
+  return PoliceFormRepository(
+    await ref.watch(appDatabaseProvider.future),
+    guard,
+    await ref.watch(writeContextProvider.future),
+  );
+});
+
+/// Runs once per app start for Owner/Admin: removes archive items older than 2 years.
+final autoPurgeProvider = FutureProvider<int>((ref) async {
+  try {
+    final access = ref.watch(accessGuardProvider).access;
+    if (access == null || !access.can(Permission.archiveRestore)) {
+      return 0;
+    }
+    return await (await ref.watch(archiveRepositoryProvider.future)).purgeExpired();
+  } on Object {
+    return 0;
+  }
 });

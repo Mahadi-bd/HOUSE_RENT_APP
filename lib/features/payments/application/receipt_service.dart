@@ -35,6 +35,9 @@ class ReceiptService {
   static const regularFontAsset = 'assets/fonts/NotoSansBengali-Regular.ttf';
   static const boldFontAsset = 'assets/fonts/NotoSansBengali-Bold.ttf';
 
+  /// The bundled Bengali fonts (regular, bold); null when the files are not in the app.
+  static Future<(pw.Font?, pw.Font?)> loadFonts() async => (await _font(regularFontAsset), await _font(boldFontAsset));
+
   static Future<pw.Font?> _font(String asset) async {
     try {
       return pw.Font.ttf(await rootBundle.load(asset));

@@ -434,5 +434,49 @@
   "ocrFailed": "The photo could not be read. Try a clearer photo or type the details.",
   "ocrSaved": "NID saved",
   "scanPayment": "Read from a payment screenshot",
-  "ocrCheckValues": "Check the amount and transaction ID before saving."
+  "ocrCheckValues": "Check the amount and transaction ID before saving.",
+  "archiveTitle": "Deleted items archive",
+  "archiveEmpty": "Nothing in the archive.",
+  "archiveHint": "Deleted items are kept for 2 years. You can bring them back until then.",
+  "restoreItem": "Restore",
+  "itemRestored": "Item restored",
+  "keptUntil": "Kept until {date}",
+  "deletedOn": "Deleted {date}",
+  "archTenant": "Tenant",
+  "archPayment": "Payment",
+  "archCharge": "Extra charge",
+  "archExpense": "Expense",
+  "archMember": "Household member",
+  "archDocument": "Document",
+  "openArchive": "Deleted items archive",
+  "legalTitle": "Legal records",
+  "addLegal": "Add legal notice or NOC",
+  "legalNotice": "Legal notice",
+  "legalNoc": "NOC",
+  "legalRef": "Reference number (optional)",
+  "legalNone": "No legal records yet.",
+  "legalErase": "Erase personal data",
+  "legalEraseWarn": "This permanently erases the tenant's private details, household, documents and photos. The legal notice, NOCs, the police-share log and payment amounts are kept. This cannot be undone.",
+  "legalErased": "Personal data erased",
+  "legalNeedNotice": "Add a legal notice first.",
+  "legalOpen": "Legal records",
+  "policeForm": "Police form",
+  "policeConsent": "The tenant has agreed to share this information with the police.",
+  "policeCreate": "Create and share",
+  "policeLogged": "Share recorded",
+  "errorConsent": "Tick the consent box first.",
+  "@keptUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@deletedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

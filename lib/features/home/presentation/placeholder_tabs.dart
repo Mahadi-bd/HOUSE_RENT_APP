@@ -7,6 +7,7 @@ import 'package:rent_solution/core/permissions/permission_matrix.dart';
 import 'package:rent_solution/core/permissions/role.dart';
 import 'package:rent_solution/core/routing/route_names.dart';
 import 'package:rent_solution/core/utils/async_value_x.dart';
+import 'package:rent_solution/data/repositories/repository_providers.dart';
 import 'package:rent_solution/features/organization/data/organization_repository.dart';
 import 'package:rent_solution/features/tenants/presentation/tenant_home_screen.dart';
 import 'package:rent_solution/shared/widgets/brand_footer.dart';
@@ -31,6 +32,11 @@ class DashboardTab extends ConsumerWidget {
     final canProperties = access?.can(Permission.tenantBasicRead) ?? false;
     final canExpenses = access?.can(Permission.reportsView) ?? false;
     final canBusiness = access?.can(Permission.settingsManage) ?? false;
+    final canArchive = access?.can(Permission.archiveRestore) ?? false;
+    if (canArchive) {
+      // Once per app start: remove archive items older than 2 years.
+      ref.watch(autoPurgeProvider);
+    }
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -59,6 +65,14 @@ class DashboardTab extends ConsumerWidget {
           icon: const Icon(Icons.info_outline),
           label: Text(t.openAbout),
         ),
+        if (canArchive) ...[
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            onPressed: () => context.push(RouteNames.archive),
+            icon: const Icon(Icons.inventory_2_outlined),
+            label: Text(t.openArchive),
+          ),
+        ],
         if (canBusiness) ...[
           const SizedBox(height: 8),
           OutlinedButton.icon(

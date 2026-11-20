@@ -111,6 +111,9 @@ bool canOpenPath(MemberAccess? access, String location) {
   if (location.startsWith(RouteNames.about)) {
     return true;
   }
+  if (location.startsWith(RouteNames.archive)) {
+    return access.can(Permission.archiveRestore) || access.can(Permission.legalRecords);
+  }
   if (location.startsWith(RouteNames.business)) {
     return access.can(Permission.settingsManage);
   }

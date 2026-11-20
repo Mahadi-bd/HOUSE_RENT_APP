@@ -33,9 +33,12 @@ class DocumentsRepository {
 
   static const _allowed = {'png', 'jpg', 'jpeg', 'pdf'};
 
-  Future<Tenant> _tenant(String tenantId) async {
+  Future<Tenant> _tenant(String tenantId, {bool allowMovedOut = false}) async {
     final tenant = await (_db.select(_db.tenants)
-          ..where((t) => t.id.equals(tenantId) & t.orgId.equals(_ctx.orgId) & t.deletedAt.isNull()))
+          ..where((t) {
+            final base = t.id.equals(tenantId) & t.orgId.equals(_ctx.orgId);
+            return allowMovedOut ? base : base & t.deletedAt.isNull();
+          }))
         .getSingleOrNull();
     if (tenant == null) {
       throw StateError('Tenant not found.');
@@ -56,6 +59,7 @@ class DocumentsRepository {
     required DocumentType type,
     required Uint8List bytes,
     required String extension,
+    bool allowMovedOut = false,
   }) async {
     final sensitive = type != DocumentType.photo;
     _guard.require(sensitive ? Permission.tenantSensitiveWrite : Permission.tenantWrite);
@@ -67,7 +71,7 @@ class DocumentsRepository {
       throw ArgumentError('The file must be between 1 byte and 10 MB.');
     }
     final id = newId();
-    final tenant = await _tenant(tenantId);
+    final tenant = await _tenant(tenantId, allowMovedOut: allowMovedOut);
     _guard.requireInProperty(
       sensitive ? Permission.tenantSensitiveWrite : Permission.tenantWrite,
       await _propertyOf(tenant),
