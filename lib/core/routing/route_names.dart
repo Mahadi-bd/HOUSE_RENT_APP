@@ -48,9 +48,6 @@ abstract final class RouteNames {
   /// About: permanent brand and developer credit.
   static const about = '/about';
 
-  /// About: the permanent brand and developer credit.
-  static const about = '/about';
-
   /// Deleted Items Archive.
   static const archive = '/archive';
 }
