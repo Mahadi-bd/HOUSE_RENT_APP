@@ -64,10 +64,12 @@ def patch_settings(path):
     return True
 
 
+IMPORTS = "import java.io.FileInputStream\nimport java.util.Properties\n\n"
+
 SIGNING_HEAD = """val keystorePropertiesFile = rootProject.file("key.properties")
-val keystoreProperties = java.util.Properties()
+val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(java.io.FileInputStream(keystorePropertiesFile))
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
 """
@@ -94,6 +96,10 @@ def patch_app_gradle(path):
         s = s.replace("minSdk = flutter.minSdkVersion", "minSdk = 23", 1)
         changed = True
     if "keystoreProperties" not in s:
+        # Kotlin scripts: `java.util.Properties()` does not work inside Gradle (the word `java` means
+        # the Java plugin there), so the classes are IMPORTED at the very top of the file.
+        if "import java.util.Properties" not in s:
+            s = IMPORTS + s
         s = s.replace("android {", SIGNING_HEAD + "android {", 1)
         s = s.replace("    buildTypes {", SIGNING_BLOCK + "    buildTypes {", 1)
         s = s.replace(

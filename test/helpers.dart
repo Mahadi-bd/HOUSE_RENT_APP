@@ -12,6 +12,8 @@ import 'package:rent_solution/data/repositories/archive_repository.dart';
 import 'package:rent_solution/data/repositories/charges_repository.dart';
 import 'package:rent_solution/data/repositories/documents_repository.dart';
 import 'package:rent_solution/data/repositories/household_repository.dart';
+import 'package:rent_solution/data/repositories/legal_repositories.dart';
+import 'package:rent_solution/data/repositories/police_repository.dart';
 import 'package:rent_solution/data/repositories/tenant_vault_repository.dart';
 import 'package:rent_solution/data/repositories/expenses_repository.dart';
 import 'package:rent_solution/data/repositories/payments_repository.dart';
@@ -126,6 +128,15 @@ ArchiveRepository archiveFor(
     root,
   );
 }
+
+LegalRecordsRepository legalFor(AppDatabase db, MemberAccess? a, Directory root, {KeyValueStore? keyStore, String orgId = 'org'}) =>
+    LegalRecordsRepository(db, guardFor(a), contextAt(testNow, orgId: orgId), documentsFor(db, a, root, keyStore: keyStore, orgId: orgId));
+
+LegalErasureRepository erasureFor(AppDatabase db, MemberAccess? a, Directory root, {String orgId = 'org'}) =>
+    LegalErasureRepository(db, guardFor(a), contextAt(testNow, orgId: orgId), confirmations, archiveFor(db, a, root, orgId: orgId));
+
+PoliceFormRepository policeFor(AppDatabase db, MemberAccess? a, {String orgId = 'org'}) =>
+    PoliceFormRepository(db, guardFor(a), contextAt(testNow, orgId: orgId));
 
 /// Key store shared by document tests unless a test brings its own.
 final sharedKeyStore = MemoryKeyValueStore();

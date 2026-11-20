@@ -14,6 +14,11 @@ fi
 # flutter create adds a sample test that does not belong to this app.
 if [ -f test/widget_test.dart ] && grep -q "MyApp" test/widget_test.dart; then rm -f test/widget_test.dart; fi
 
+# Two files that came from an earlier attempt and are not part of this project (they break the build).
+for stray in lib/features/household/presentation/add_household_screen.dart test/vault_and_ids_test.dart; do
+  if [ -f "$stray" ]; then rm -f "$stray"; echo "removed stray file $stray"; fi
+done
+
 bash tools/set_app_id.sh "$APP_ID"
 python3 tools/patch_pubspec.py
 python3 tools/patch_android.py
