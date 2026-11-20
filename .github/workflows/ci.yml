@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, develop]
   pull_request:
-  workflow_dispatch:
+  workflow_dispatch: # Actions tab > "CI and debug APK" > Run workflow = build an APK on demand
 
 jobs:
   rules:
@@ -53,15 +53,18 @@ jobs:
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter gen-l10n
 
+      # Style checks only report problems. They never stop the APK.
       - run: dart format --line-length=100 .
         continue-on-error: true
       - run: flutter analyze --no-fatal-infos
         continue-on-error: true
 
+      # Build the APK BEFORE the tests, so you get an APK even while some tests still fail.
       - run: flutter build apk --debug
       - uses: actions/upload-artifact@v4
         with:
           name: rent-solution-debug-apk
           path: build/app/outputs/flutter-apk/app-debug.apk
 
+      # The tests decide whether the run is green or red.
       - run: flutter test --reporter expanded
