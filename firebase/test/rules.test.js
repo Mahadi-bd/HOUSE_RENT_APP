@@ -271,7 +271,8 @@ describe('Revocation needs key rotation (atomic)', () => {
     await assertSucceeds(setDoc(opRef(as('caretaker'), 'new'), opData('caretaker', 'org', { keyVersion: 2 })));
   });
   it('the revoked member is locked out at once', async () => {
-    await assertSucceeds(rotatingBatch(as('admin'), 'admin', 2, (b) => b.update(memberRef(as('admin'), 'manager'), { status: 'revoked' })).commit());
+    const adminDb = as('admin');
+    await assertSucceeds(rotatingBatch(adminDb, 'admin', 2, (b) => b.update(memberRef(adminDb, 'manager'), { status: 'revoked' })).commit());
     const db = as('manager');
     await assertFails(getDoc(orgRef(db)));
     await assertFails(getDoc(opRef(db, 'org1')));
