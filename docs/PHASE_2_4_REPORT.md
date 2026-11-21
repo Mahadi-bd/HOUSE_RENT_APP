@@ -19,7 +19,10 @@ Source code only; not compiled here. Written in this step: 3 repositories, 1 PDF
 - Tenant profile menu (Owner/Admin only): "Police form". The person must tick that the tenant agreed. The PDF (tenant, NID, address, emergency contact, lease dates, household with phones and ID numbers, owner details, signature lines) opens in the share menu. Every share is logged (who, when, consent). The log and audit never contain the tenant's data.
 - **Limit:** the form is in English for now (Bengali labels need the font files and translated labels; ask me).
 
+## Scoped Firestore keys (written after 2.4)
+Rules v3, 52 emulator test cases, `KeyHierarchy` crypto and its tests, design in `SCOPED_KEYS_DESIGN.md`. Not yet run.
+
 ## Still open
-1. Scoped Firestore keys and rules (blocks Phase 3).
+1. Run the new rules tests and the first real compile on GitHub (Phase 3 starts only after they pass).
 2. Real compile results from GitHub (the first Gradle error was fixed; Dart errors may follow).
 3. Bengali police form, Sign in with Apple, offline lease durations (waiting for you).

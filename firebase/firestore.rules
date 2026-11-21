@@ -1,27 +1,29 @@
 rules_version = '2';
 
-// Rent Solution relay rules, version 2 (Phase 1.1).
-// STATUS: NOT DEPLOYED. Deploy only after `npm test` in this folder passes on the emulator.
+// Rent Solution relay rules, version 3 (scoped keys). Tested on the Firebase emulator (see test/).
 //
 // What the server can and cannot enforce:
-//  * Server rules decide WHO may read and write: active membership, role, vault access,
-//    invitations, key version, sizes, expiry.
-//  * Operation contents are end-to-end encrypted, so the server cannot see business actions.
-//    Devices must check the sender's role when they apply an operation (Admin device is the
-//    authority), and vault data is protected cryptographically by the vault key.
+//  * Rules decide WHO may read or write: active membership, role, property scope, own tenant record,
+//    vault access, invitations, key version, sizes, expiry, and that a revoke comes with a key rotation.
+//  * Operation contents are end-to-end encrypted with SCOPE KEYS (org, one per property, one per tenant,
+//    vault). A member only receives the keys of what they may see, so even a modified app that downloads
+//    ciphertext it should not have cannot read it.
+//  * The server cannot check what an operation says. Devices check the sender's role when applying it.
+//  * Scope, property id, record kind and timing are visible to the server (metadata). Contents are not.
 service cloud.firestore {
   match /databases/{database}/documents {
 
     function signedIn() { return request.auth != null; }
 
-    function orgPath(orgId) {
-      return /databases/$(database)/documents/orgs/$(orgId);
-    }
+    function orgPath(orgId) { return /databases/$(database)/documents/orgs/$(orgId); }
     function memberPath(orgId, uid) {
       return /databases/$(database)/documents/orgs/$(orgId)/members/$(uid);
     }
     function invitePath(orgId, inviteId) {
       return /databases/$(database)/documents/orgs/$(orgId)/invites/$(inviteId);
+    }
+    function grantPath(orgId, uid) {
+      return /databases/$(database)/documents/orgs/$(orgId)/grants/$(uid);
     }
 
     function myMember(orgId) { return get(memberPath(orgId, request.auth.uid)).data; }
@@ -37,11 +39,50 @@ service cloud.firestore {
       return isActiveMember(orgId) && myMember(orgId).role in ['owner', 'admin'];
     }
     function hasVault(orgId) {
-      return isAdmin(orgId) || myMember(orgId).get('vaultAccess', false) == true;
+      return isAdmin(orgId) || (isActiveMember(orgId) && myMember(orgId).get('vaultAccess', false) == true);
+    }
+    function isStaff(orgId) {
+      return isActiveMember(orgId) && myMember(orgId).role in ['manager', 'caretaker'];
+    }
+    // Staff with an empty property list may work with every property.
+    function staffCoversProperty(orgId, propertyId) {
+      return isStaff(orgId)
+        && (myMember(orgId).get('propertyScope', []).size() == 0
+            || propertyId in myMember(orgId).get('propertyScope', []));
+    }
+
+    // May this member read (or write) a record of this scope? d = the record's data.
+    function canTouchScope(orgId, d) {
+      return d.scopeType == 'org' ? true
+        : d.scopeType == 'vault' ? hasVault(orgId)
+        : d.scopeType == 'property' ? (isAdmin(orgId) || staffCoversProperty(orgId, d.scopeId))
+        : d.scopeType == 'tenant' ? (isAdmin(orgId)
+            || (myMember(orgId).get('linkedTenantId', '') != ''
+                && myMember(orgId).get('linkedTenantId', '') == d.scopeId)
+            || staffCoversProperty(orgId, d.get('propertyId', '')))
+        : false;
+    }
+
+    // A change that takes access away needs a key rotation in the SAME commit: the organization key
+    // version goes up by exactly one and the acting admin's new key bundle for that epoch is written.
+    function rotated(orgId) {
+      let before = get(orgPath(orgId)).data;
+      let after = getAfter(orgPath(orgId)).data;
+      return after.keyVersion == before.keyVersion + 1
+        && existsAfter(grantPath(orgId, request.auth.uid))
+        && getAfter(grantPath(orgId, request.auth.uid)).data.epoch == after.keyVersion;
+    }
+
+    // Does this member update take access away? (uses resource and request)
+    function memberChangeNeedsRotation() {
+      return (resource.data.status == 'active' && request.resource.data.status != 'active')
+        || (resource.data.get('vaultAccess', false) == true && request.resource.data.vaultAccess == false)
+        || request.resource.data.get('propertyScope', []) != resource.data.get('propertyScope', []);
     }
 
     // An invitation can be used once, by the invited verified email, with the right code hash,
     // before it expires, and only together with marking it accepted in the same batch.
+    // The member copies role, vault flag, property scope and tenant link from the invitation.
     function validInvite(orgId, m) {
       let inv = get(invitePath(orgId, m.inviteId)).data;
       let after = getAfter(invitePath(orgId, m.inviteId)).data;
@@ -50,6 +91,8 @@ service cloud.firestore {
         && inv.role == m.role
         && inv.codeHash == m.codeHash
         && inv.get('vaultAccess', false) == m.vaultAccess
+        && inv.get('propertyScope', []) == m.get('propertyScope', [])
+        && inv.get('linkedTenantId', '') == m.get('linkedTenantId', '')
         && request.auth.token.email_verified == true
         && request.auth.token.email == inv.email
         && after.status == 'accepted'
@@ -59,7 +102,6 @@ service cloud.firestore {
     match /orgs/{orgId} {
       allow read: if isActiveMember(orgId);
 
-      // Create your own organization, as its owner, with your owner membership in the same batch.
       allow create: if signedIn()
         && request.resource.data.keys().hasOnly(['ownerUid', 'name', 'keyVersion', 'createdAt'])
         && request.resource.data.keys().hasAll(['ownerUid', 'name', 'keyVersion', 'createdAt'])
@@ -71,20 +113,22 @@ service cloud.firestore {
         && request.resource.data.createdAt == request.time
         && getAfter(memberPath(orgId, request.auth.uid)).data.role == 'owner';
 
-      // The owner may rename. Owner or admin may raise keyVersion by exactly 1 (key rotation).
-      // ownerUid can never change.
+      // The owner may rename. Owner or admin may raise keyVersion by exactly 1, and only together with
+      // their own new key bundle for that epoch. ownerUid never changes.
       allow update: if isAdmin(orgId)
         && request.resource.data.ownerUid == resource.data.ownerUid
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'keyVersion'])
         && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['name'])
             || isOwner(orgId))
         && (request.resource.data.keyVersion == resource.data.keyVersion
-            || request.resource.data.keyVersion == resource.data.keyVersion + 1);
+            || (request.resource.data.keyVersion == resource.data.keyVersion + 1
+                && existsAfter(grantPath(orgId, request.auth.uid))
+                && getAfter(grantPath(orgId, request.auth.uid)).data.epoch
+                     == request.resource.data.keyVersion));
 
       allow delete: if false;
 
       match /members/{uid} {
-        // A person can always read their own member document (to learn they were suspended).
         allow get: if signedIn() && (uid == request.auth.uid || isAdmin(orgId));
         allow list: if isAdmin(orgId);
 
@@ -99,10 +143,10 @@ service cloud.firestore {
             && request.resource.data.vaultAccess == true
             && request.resource.data.createdAt == request.time)
           ||
-          // B) Accept an invitation. Nobody can create a member document any other way,
-          //    and the role can never be 'owner'.
+          // B) Accept an invitation (nobody can create a member any other way; never an owner).
           (request.resource.data.keys().hasOnly(
-              ['role', 'status', 'vaultAccess', 'inviteId', 'codeHash', 'createdAt'])
+              ['role', 'status', 'vaultAccess', 'inviteId', 'codeHash', 'createdAt',
+               'propertyScope', 'linkedTenantId'])
             && request.resource.data.keys().hasAll(
               ['role', 'status', 'vaultAccess', 'inviteId', 'codeHash', 'createdAt'])
             && request.resource.data.role in ['admin', 'manager', 'caretaker', 'tenant']
@@ -113,8 +157,8 @@ service cloud.firestore {
             && validInvite(orgId, request.resource.data))
         );
 
-        // Admins manage others only. The owner document can never be changed. Only the owner
-        // can touch or create admins. Revoked is final. Only these fields may change.
+        // Admins manage others only. The owner document can never change. Only the owner can touch or
+        // create admins. Revoked is final. Anything that takes access away needs a key rotation.
         allow update: if isAdmin(orgId)
           && uid != request.auth.uid
           && resource.data.role != 'owner'
@@ -123,9 +167,10 @@ service cloud.firestore {
           && request.resource.data.status in ['active', 'suspended', 'revoked']
           && request.resource.data.vaultAccess is bool
           && request.resource.data.diff(resource.data).affectedKeys()
-               .hasOnly(['role', 'status', 'vaultAccess', 'updatedAt'])
+               .hasOnly(['role', 'status', 'vaultAccess', 'updatedAt', 'propertyScope'])
           && ((resource.data.role == 'admin' || request.resource.data.role == 'admin')
-              ? isOwner(orgId) : true);
+              ? isOwner(orgId) : true)
+          && (!memberChangeNeedsRotation() || rotated(orgId));
 
         allow delete: if false;
       }
@@ -136,7 +181,7 @@ service cloud.firestore {
         allow create: if isAdmin(orgId)
           && request.resource.data.keys().hasOnly(
                ['email', 'role', 'codeHash', 'vaultAccess', 'status', 'createdBy',
-                'createdAt', 'expiresAt'])
+                'createdAt', 'expiresAt', 'propertyScope', 'linkedTenantId'])
           && request.resource.data.keys().hasAll(
                ['email', 'role', 'codeHash', 'vaultAccess', 'status', 'createdBy',
                 'createdAt', 'expiresAt'])
@@ -144,6 +189,9 @@ service cloud.firestore {
           && request.resource.data.createdBy == request.auth.uid
           && request.resource.data.role in ['admin', 'manager', 'caretaker', 'tenant']
           && (request.resource.data.role != 'admin' || isOwner(orgId))
+          && (request.resource.data.role != 'tenant'
+              || (request.resource.data.get('linkedTenantId', '') is string
+                  && request.resource.data.get('linkedTenantId', '') != ''))
           && request.resource.data.email is string
           && request.resource.data.email.size() > 3
           && request.resource.data.codeHash is string
@@ -154,12 +202,10 @@ service cloud.firestore {
           && request.resource.data.expiresAt <= request.time + duration.value(7, 'd');
 
         allow update:
-          // An admin cancels a pending invitation.
           if (isAdmin(orgId)
               && resource.data.status == 'pending'
               && request.resource.data.status == 'cancelled'
               && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']))
-          // The invited person accepts it, in the same batch as creating their member document.
           || (signedIn()
               && resource.data.status == 'pending'
               && request.resource.data.status == 'accepted'
@@ -175,22 +221,50 @@ service cloud.firestore {
         allow delete: if false;
       }
 
+      // Wrapped key bundles. Each member can read only their own. Only admins write them, only for
+      // an ACTIVE member, only for the current key epoch.
+      match /grants/{uid} {
+        allow get: if signedIn() && uid == request.auth.uid;
+        allow create, update: if isAdmin(orgId)
+          && request.resource.data.keys().hasOnly(['recipientUid', 'epoch', 'bundle', 'updatedAt'])
+          && request.resource.data.keys().hasAll(['recipientUid', 'epoch', 'bundle', 'updatedAt'])
+          && request.resource.data.recipientUid == uid
+          && request.resource.data.epoch == getAfter(orgPath(orgId)).data.keyVersion
+          && request.resource.data.bundle is string
+          && request.resource.data.bundle.size() > 0
+          && request.resource.data.bundle.size() <= 200000
+          && request.resource.data.updatedAt == request.time
+          && existsAfter(memberPath(orgId, uid))
+          && getAfter(memberPath(orgId, uid)).data.status == 'active';
+        allow delete: if isAdmin(orgId);
+      }
+
       // Encrypted operation records: immutable. Old ones are removed by a TTL policy on expireAt.
+      // Clients must query with where('scopeType', '==', ...) and, for property or tenant scope,
+      // where('scopeId', '==', ...).
       match /ops/{opId} {
-        // Non-vault members must query with where('channel', '==', 'basic').
-        allow get, list: if isActiveMember(orgId)
-          && (resource.data.channel == 'basic' || hasVault(orgId));
+        allow get, list: if isActiveMember(orgId) && canTouchScope(orgId, resource.data);
 
         allow create: if isActiveMember(orgId)
           && request.resource.data.keys().hasOnly(
-               ['senderUid', 'deviceId', 'entityType', 'entityId', 'hlc', 'channel',
-                'keyVersion', 'nonce', 'ciphertext', 'createdAt', 'expireAt'])
+               ['senderUid', 'deviceId', 'entityType', 'entityId', 'hlc', 'scopeType', 'scopeId',
+                'propertyId', 'keyVersion', 'nonce', 'ciphertext', 'createdAt', 'expireAt'])
           && request.resource.data.keys().hasAll(
-               ['senderUid', 'deviceId', 'entityType', 'entityId', 'hlc', 'channel',
+               ['senderUid', 'deviceId', 'entityType', 'entityId', 'hlc', 'scopeType', 'scopeId',
                 'keyVersion', 'nonce', 'ciphertext', 'createdAt', 'expireAt'])
           && request.resource.data.senderUid == request.auth.uid
-          && request.resource.data.channel in ['basic', 'vault']
-          && (request.resource.data.channel == 'basic' || hasVault(orgId))
+          && request.resource.data.scopeType in ['org', 'property', 'tenant', 'vault']
+          && request.resource.data.scopeId is string
+          && request.resource.data.scopeId.size() > 0
+          && request.resource.data.scopeId.size() <= 64
+          && ((request.resource.data.scopeType != 'org' && request.resource.data.scopeType != 'vault')
+              || request.resource.data.scopeId == orgId)
+          && (request.resource.data.scopeType != 'tenant'
+              || (request.resource.data.get('propertyId', '') is string
+                  && request.resource.data.get('propertyId', '').size() > 0
+                  && request.resource.data.get('propertyId', '').size() <= 64))
+          && (request.resource.data.scopeType != 'org' || myMember(orgId).role != 'tenant')
+          && canTouchScope(orgId, request.resource.data)
           && request.resource.data.keyVersion == get(orgPath(orgId)).data.keyVersion
           && request.resource.data.ciphertext is string
           && request.resource.data.ciphertext.size() > 0

@@ -14,3 +14,9 @@
 
 Server rules cannot see encrypted operation contents. Business permissions on operations are checked by the
 applying device (the Admin device is the authority); vault data is protected by the vault key.
+
+## Rules v3 (scoped keys)
+Operations carry `scopeType` (org, property, tenant, vault), `scopeId` and, for tenant records, `propertyId`.
+Members carry `propertyScope` (list, empty = all) and `linkedTenantId`. Key bundles live in `grants/{uid}`.
+Queries must filter: `where('scopeType', '==', ...)` and, for property or tenant scope, `where('scopeId', '==', ...)`.
+Design: `docs/SCOPED_KEYS_DESIGN.md`.

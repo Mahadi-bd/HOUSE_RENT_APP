@@ -11,10 +11,10 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('key lives in Keystore/Keychain and the database file is encrypted', (tester) async {
-    final secrets = LocalSecrets();
+    final secrets = LocalSecrets(); // real Keystore (Android) / Keychain (iOS)
     final key = await secrets.databasePassphrase(databaseExists: false);
     expect(key, matches(RegExp(r'^[0-9a-f]{64}$')));
-    expect(await secrets.databasePassphrase(databaseExists: true), key);
+    expect(await secrets.databasePassphrase(), key);
 
     final dir = await getTemporaryDirectory();
     final file = File('${dir.path}/it_encrypted.db');
