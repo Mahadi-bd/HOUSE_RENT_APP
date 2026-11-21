@@ -1,4 +1,4 @@
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' hide isNull, isNotNull;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rent_solution/core/security/confirmation_service.dart';
 import 'package:rent_solution/data/local/database.dart';
@@ -17,8 +17,11 @@ void main() {
   });
   tearDown(() => db.close());
 
-  Future<void> moveOut(String tenantId, {String org = 'org'}) async => tenantsFor(db, ownerAccess, null, org)
-      .softDelete(tenantId, confirmation: await confirmed(SensitiveAction.tenantDelete, tenantId));
+  Future<void> moveOut(String tenantId, {String org = 'org'}) async =>
+      tenantsFor(db, ownerAccess, null, org).softDelete(
+        tenantId,
+        confirmation: await confirmed(SensitiveAction.tenantDelete, tenantId),
+      );
 
   Future<Unit> unit() => (db.select(db.units)..where((u) => u.id.equals(ids.unitId))).getSingle();
   Future<Tenant> tenant(String id) => (db.select(db.tenants)..where((t) => t.id.equals(id))).getSingle();
@@ -61,18 +64,9 @@ void main() {
     final now = DateTime.utc(2026, 11);
     await db.into(db.tenants).insert(
           TenantsCompanion.insert(
-            id: 'second',
-            orgId: 'org',
-            createdAt: now,
-            updatedAt: now,
-            createdBy: 'u',
-            deviceId: 'd',
-            hlc: '1',
-            name: 'Second',
-            phone: '01722222222',
-            unitId: ids.unitId,
-            leaseStart: now,
-            monthlyRent: 1,
+            id: 'second', orgId: 'org', createdAt: now, updatedAt: now, createdBy: 'u',
+            deviceId: 'd', hlc: '1', name: 'Second', phone: '01722222222', unitId: ids.unitId,
+            leaseStart: now, monthlyRent: 1,
           ),
         );
     await moveOut(ids.tenantId);
