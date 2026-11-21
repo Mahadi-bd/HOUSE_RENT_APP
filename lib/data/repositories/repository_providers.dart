@@ -1,11 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:rent_solution/core/security/vault_crypto.dart';
-import 'package:rent_solution/data/repositories/documents_repository.dart';
-import 'package:rent_solution/data/repositories/household_repository.dart';
-import 'package:rent_solution/data/repositories/tenant_vault_repository.dart';
 import 'package:rent_solution/core/permissions/access_guard.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rent_solution/core/permissions/permission_matrix.dart';
 import 'package:rent_solution/core/security/audit_checkpoint.dart';
 import 'package:rent_solution/core/security/vault_crypto.dart';
@@ -14,22 +9,22 @@ import 'package:rent_solution/core/utils/async_value_x.dart';
 import 'package:rent_solution/data/local/open_database.dart';
 import 'package:rent_solution/data/repositories/archive_repository.dart';
 import 'package:rent_solution/data/repositories/charges_repository.dart';
-import 'package:rent_solution/data/repositories/legal_repositories.dart';
-import 'package:rent_solution/data/repositories/police_repository.dart';
 import 'package:rent_solution/data/repositories/documents_repository.dart';
 import 'package:rent_solution/data/repositories/expenses_repository.dart';
 import 'package:rent_solution/data/repositories/household_repository.dart';
+import 'package:rent_solution/data/repositories/legal_repositories.dart';
 import 'package:rent_solution/data/repositories/ocr_repository.dart';
 import 'package:rent_solution/data/repositories/org_profile_repository.dart';
 import 'package:rent_solution/data/repositories/payments_repository.dart';
+import 'package:rent_solution/data/repositories/police_repository.dart';
 import 'package:rent_solution/data/repositories/properties_repository.dart';
 import 'package:rent_solution/data/repositories/tenant_vault_repository.dart';
 import 'package:rent_solution/data/repositories/tenants_repository.dart';
 import 'package:rent_solution/data/repositories/write_context.dart';
 import 'package:rent_solution/data/sync/hlc.dart';
-import 'package:rent_solution/features/security/firebase_reauth_provider.dart';
 import 'package:rent_solution/features/auth/data/auth_repository.dart';
 import 'package:rent_solution/features/organization/data/organization_repository.dart';
+import 'package:rent_solution/features/security/firebase_reauth_provider.dart';
 
 /// Who is writing on this device (organization, user, device).
 final writeContextProvider = FutureProvider<WriteContext>((ref) async {
@@ -127,40 +122,6 @@ final orgProfileRepositoryProvider = FutureProvider<OrgProfileRepository>((ref) 
     await ref.watch(appDatabaseProvider.future),
     guard,
     await ref.watch(writeContextProvider.future),
-  );
-});
-
-/// Household members (basic data; vault parts need vault access).
-final householdRepositoryProvider = FutureProvider<HouseholdRepository>((ref) async {
-  final guard = ref.watch(accessGuardProvider);
-  return HouseholdRepository(
-    await ref.watch(appDatabaseProvider.future),
-    guard,
-    await ref.watch(writeContextProvider.future),
-    ref.watch(confirmationServiceProvider),
-  );
-});
-
-/// NID number, address, emergency contact.
-final tenantVaultRepositoryProvider = FutureProvider<TenantVaultRepository>((ref) async {
-  final guard = ref.watch(accessGuardProvider);
-  return TenantVaultRepository(
-    await ref.watch(appDatabaseProvider.future),
-    guard,
-    await ref.watch(writeContextProvider.future),
-  );
-});
-
-/// Encrypted documents on this phone.
-final documentsRepositoryProvider = FutureProvider<DocumentsRepository>((ref) async {
-  final guard = ref.watch(accessGuardProvider);
-  return DocumentsRepository(
-    await ref.watch(appDatabaseProvider.future),
-    guard,
-    await ref.watch(writeContextProvider.future),
-    ref.watch(confirmationServiceProvider),
-    const VaultKeyStore(SecureKeyValueStore()),
-    await getApplicationDocumentsDirectory(),
   );
 });
 
