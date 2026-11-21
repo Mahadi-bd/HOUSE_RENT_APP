@@ -355,7 +355,9 @@ describe('Scopes: who may read and write which operations', () => {
   it('a tenant-scoped record must name its property', async () => {
     const db = as('manager');
     await assertSucceeds(setDoc(opRef(db, 'ok1'), opData('manager', 't1')));
-    await assertFails(setDoc(opRef(db, 'bad1'), opData('manager', 't1', { propertyId: undefined })));
+    const missingProperty = opData('manager', 't1');
+    delete missingProperty.propertyId;
+    await assertFails(setDoc(opRef(db, 'bad1'), missingProperty));
   });
   it('org and vault records must use the organization id as scope id', async () => {
     const db = as('admin');
