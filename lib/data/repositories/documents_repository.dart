@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:drift/drift.dart';
 import 'package:path/path.dart' as pth;
 import 'package:rent_solution/core/permissions/access_guard.dart';
@@ -32,6 +28,7 @@ class DocumentsRepository {
   static const maxBytes = 10 * 1024 * 1024;
 
   static const _allowed = {'png', 'jpg', 'jpeg', 'pdf'};
+  static const _legalDocumentTypes = {DocumentType.legalNotice, DocumentType.noc};
 
   Future<Tenant> _tenant(String tenantId, {bool allowMovedOut = false}) async {
     final tenant = await (_db.select(_db.tenants)
@@ -161,7 +158,8 @@ class DocumentsRepository {
     if (doc == null) {
       throw StateError('Document not found.');
     }
-    final tenant = await _tenant(doc.entityId);
+    final legalRecord = _legalDocumentTypes.contains(doc.type);
+    final tenant = await _tenant(doc.entityId, allowMovedOut: legalRecord);
     if (doc.type == DocumentType.photo) {
       _guard.requireOwnOrInProperty(
         tenantId: tenant.id,

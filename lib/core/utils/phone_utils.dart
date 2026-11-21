@@ -14,17 +14,20 @@ String? normalizeBdPhone(String input) {
   if (digits.isEmpty) {
     return null;
   }
-  final bd = RegExp(r'^8801[3-9]\d{8}$');
-  if (digits.startsWith('00880')) {
+
+  // Bangladesh's international form is +880 followed by a 10-digit mobile number.
+  // Accept 00-prefixed international dialing and common local forms as well.
+  if (digits.startsWith('00')) {
     digits = digits.substring(2);
   }
-  if (digits.startsWith('0') && digits.length == 11) {
-    digits = '880${digits.substring(1)}';
-  } else if (digits.length == 10 && digits.startsWith('1')) {
-    digits = '880$digits';
-  }
-  if (bd.hasMatch(digits)) {
+  if (digits.startsWith('8801') && RegExp(r'^8801[3-9]\d{8}$').hasMatch(digits)) {
     return digits;
+  }
+  if (digits.startsWith('01') && RegExp(r'^01[3-9]\d{8}$').hasMatch(digits)) {
+    return '88${digits.substring(1)}';
+  }
+  if (digits.length == 10 && RegExp(r'^1[3-9]\d{8}$').hasMatch(digits)) {
+    return '880$digits';
   }
   if (hadPlus && !digits.startsWith('880') && RegExp(r'^\d{8,15}$').hasMatch(digits)) {
     return digits;

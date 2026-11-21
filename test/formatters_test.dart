@@ -3,7 +3,13 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:rent_solution/core/utils/formatters.dart';
 
 void main() {
-  setUpAll(initializeDateFormatting);
+  setUpAll(() async {
+    await initializeDateFormatting('en');
+    await initializeDateFormatting('bn');
+    await initializeDateFormatting('bn_BD');
+    await initializeDateFormatting('hi');
+    await initializeDateFormatting('hi_IN');
+  });
 
   group('BDT money (stored as poisha)', () {
     test('English uses lakh/crore grouping and the taka sign', () {
