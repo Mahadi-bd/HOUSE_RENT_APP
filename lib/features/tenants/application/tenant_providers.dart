@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rent_solution/data/local/database.dart';
 import 'package:rent_solution/data/repositories/documents_repository.dart';
+import 'package:rent_solution/data/repositories/documents_repository.dart';
 import 'package:rent_solution/data/repositories/properties_repository.dart';
 import 'package:rent_solution/data/repositories/repository_providers.dart';
 import 'package:rent_solution/domain/money/ledger.dart';
@@ -98,18 +99,41 @@ final ownPaymentsProvider = FutureProvider.family<List<Payment>, String>((ref, t
 });
 
 /// Expenses of one property in one month (`yyyy-MM`).
-final expensesProvider = FutureProvider.autoDispose
-    .family<List<Expense>, ({String propertyId, String month})>((ref, key) async {
-  ref.watch(dataRevisionProvider);
-  final repo = await ref.watch(expensesRepositoryProvider.future);
-  return repo.list(key.propertyId, month: key.month);
-});
+final expensesProvider =
+    FutureProvider.autoDispose.family<List<Expense>, ({String propertyId, String month})>(
+  (ref, key) async {
+    ref.watch(dataRevisionProvider);
+    final repo = await ref.watch(expensesRepositoryProvider.future);
+    return repo.list(key.propertyId, month: key.month);
+  },
+);
 
 /// Business details printed on receipts.
 final orgProfileProvider = FutureProvider.autoDispose<OrgProfile?>((ref) async {
   ref.watch(dataRevisionProvider);
   final repo = await ref.watch(orgProfileRepositoryProvider.future);
   return repo.get();
+});
+
+/// Household members of one tenant (basic data).
+final householdProvider = FutureProvider.family<List<HouseholdMember>, String>((ref, tenantId) async {
+  ref.watch(dataRevisionProvider);
+  final repo = await ref.watch(householdRepositoryProvider.future);
+  return repo.listBasic(tenantId);
+});
+
+/// Sensitive details of one tenant (throws for people without vault access).
+final tenantVaultProvider = FutureProvider.family<TenantVault?, String>((ref, tenantId) async {
+  ref.watch(dataRevisionProvider);
+  final repo = await ref.watch(tenantVaultRepositoryProvider.future);
+  return repo.get(tenantId);
+});
+
+/// Documents of one tenant that this member may see.
+final tenantDocumentsProvider = FutureProvider.family<List<TenantDocument>, String>((ref, tenantId) async {
+  ref.watch(dataRevisionProvider);
+  final repo = await ref.watch(documentsRepositoryProvider.future);
+  return repo.list(tenantId);
 });
 
 /// People in a tenant's home (basic data).
@@ -125,8 +149,8 @@ final tenantVaultProvider = FutureProvider.autoDispose.family<TenantVault?, Stri
 });
 
 /// Documents of a tenant this member may see.
-final tenantDocumentsProvider = FutureProvider.autoDispose
-    .family<List<TenantDocument>, String>((ref, tenantId) async {
+final tenantDocumentsProvider =
+    FutureProvider.autoDispose.family<List<TenantDocument>, String>((ref, tenantId) async {
   ref.watch(dataRevisionProvider);
   return (await ref.watch(documentsRepositoryProvider.future)).list(tenantId);
 });

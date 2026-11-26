@@ -263,3 +263,59 @@ Future<void> removeDocumentFlow(BuildContext context, WidgetRef ref, String docu
     () => repo.remove(documentId, reason: reason, confirmation: token),
   );
 }
+
+/// Remove a person from a tenant's household.
+Future<void> removeHouseholdFlow(BuildContext context, WidgetRef ref, HouseholdMember member) async {
+  final t = AppLocalizations.of(context);
+  final reason = await _askReason(context, t.removeMember);
+  if (reason == null || !context.mounted) {
+    return;
+  }
+  final token = await confirmSensitiveAction(
+    context,
+    ref,
+    action: SensitiveAction.householdRemove,
+    entityId: member.id,
+  );
+  if (token == null || !context.mounted) {
+    return;
+  }
+  final repo = await ref.read(householdRepositoryProvider.future);
+  if (!context.mounted) {
+    return;
+  }
+  await _run(
+    context,
+    ref,
+    t.memberRemoved,
+    () => repo.removeMember(member.id, reason: reason, confirmation: token),
+  );
+}
+
+/// Remove an encrypted document.
+Future<void> removeDocumentFlow(BuildContext context, WidgetRef ref, String documentId) async {
+  final t = AppLocalizations.of(context);
+  final reason = await _askReason(context, t.removeDocument);
+  if (reason == null || !context.mounted) {
+    return;
+  }
+  final token = await confirmSensitiveAction(
+    context,
+    ref,
+    action: SensitiveAction.documentRemove,
+    entityId: documentId,
+  );
+  if (token == null || !context.mounted) {
+    return;
+  }
+  final repo = await ref.read(documentsRepositoryProvider.future);
+  if (!context.mounted) {
+    return;
+  }
+  await _run(
+    context,
+    ref,
+    t.documentRemoved,
+    () => repo.remove(documentId, reason: reason, confirmation: token),
+  );
+}

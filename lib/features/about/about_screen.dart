@@ -3,9 +3,9 @@ import 'package:rent_solution/core/brand/brand_config.dart';
 import 'package:rent_solution/core/localization/generated/app_localizations.dart';
 
 /// About: the permanent brand, developer credit and licence note. Open to every signed-in member.
-class AboutBrandScreen extends StatelessWidget {
+class AboutScreen extends StatelessWidget {
   /// Creates the screen.
-  const AboutBrandScreen({super.key});
+  const AboutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class AboutBrandScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            BrandConfig.companyName,
+            BrandConfig.brandName,
             textAlign: TextAlign.center,
             style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
