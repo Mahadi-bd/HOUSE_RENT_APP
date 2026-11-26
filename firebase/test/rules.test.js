@@ -271,8 +271,7 @@ describe('Revocation needs key rotation (atomic)', () => {
     await assertSucceeds(setDoc(opRef(as('caretaker'), 'new'), opData('caretaker', 'org', { keyVersion: 2 })));
   });
   it('the revoked member is locked out at once', async () => {
-    const adminDb = as('admin');
-    await assertSucceeds(rotatingBatch(adminDb, 'admin', 2, (b) => b.update(memberRef(adminDb, 'manager'), { status: 'revoked' })).commit());
+    await assertSucceeds(rotatingBatch(as('admin'), 'admin', 2, (b) => b.update(memberRef(as('admin'), 'manager'), { status: 'revoked' })).commit());
     const db = as('manager');
     await assertFails(getDoc(orgRef(db)));
     await assertFails(getDoc(opRef(db, 'org1')));
@@ -356,9 +355,7 @@ describe('Scopes: who may read and write which operations', () => {
   it('a tenant-scoped record must name its property', async () => {
     const db = as('manager');
     await assertSucceeds(setDoc(opRef(db, 'ok1'), opData('manager', 't1')));
-    const missingProperty = opData('manager', 't1');
-    delete missingProperty.propertyId;
-    await assertFails(setDoc(opRef(db, 'bad1'), missingProperty));
+    await assertFails(setDoc(opRef(db, 'bad1'), opData('manager', 't1', { propertyId: undefined })));
   });
   it('org and vault records must use the organization id as scope id', async () => {
     const db = as('admin');
