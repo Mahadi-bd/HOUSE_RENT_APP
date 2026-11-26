@@ -10,7 +10,6 @@ import 'package:rent_solution/core/security/vault_crypto.dart';
 import 'package:rent_solution/core/storage/key_value_store.dart';
 import 'package:rent_solution/data/local/database.dart';
 import 'package:rent_solution/data/local/enums.dart';
-import 'package:rent_solution/data/repositories/documents_repository.dart';
 
 import 'helpers.dart';
 
@@ -35,7 +34,7 @@ void main() {
   });
 
   const owner = ownerAccess;
-  DocumentsRepository repo(MemberAccess? access) => documentsFor(db, access, root, keyStore: keys);
+  dynamic repo(MemberAccess? a) => documentsFor(db, a, root, keyStore: keys);
 
   test('a stored document is encrypted on disk and comes back identical', () async {
     final id = await repo(owner).store(tenantId: tenantId, type: DocumentType.nid, bytes: _image, extension: '.PNG');
@@ -51,7 +50,10 @@ void main() {
     final r = repo(owner);
     await expectLater(r.store(tenantId: tenantId, type: DocumentType.nid, bytes: _image, extension: 'exe'), throwsArgumentError);
     await expectLater(r.store(tenantId: tenantId, type: DocumentType.nid, bytes: Uint8List(0), extension: 'png'), throwsArgumentError);
-    await expectLater(r.store(tenantId: tenantId, type: DocumentType.nid, bytes: Uint8List(10 * 1024 * 1024 + 1), extension: 'png'), throwsArgumentError);
+    await expectLater(
+      r.store(tenantId: tenantId, type: DocumentType.nid, bytes: Uint8List(10 * 1024 * 1024 + 1), extension: 'png'),
+      throwsArgumentError,
+    );
     await expectLater(r.store(tenantId: 'nope', type: DocumentType.nid, bytes: _image, extension: 'png'), throwsStateError);
     expect(await db.select(db.documents).get(), isEmpty);
     expect(Directory('${root.path}/vault').existsSync() ? Directory('${root.path}/vault').listSync() : [], isEmpty);
@@ -60,15 +62,22 @@ void main() {
   test('who may add: vault-approved staff and admin for sensitive files; manager for the tenant photo', () async {
     await repo(vaultStaff).store(tenantId: tenantId, type: DocumentType.nid, bytes: _image, extension: 'jpg');
     await repo(const MemberAccess(role: Role.manager)).store(tenantId: tenantId, type: DocumentType.photo, bytes: _image, extension: 'jpg');
-    await expectLater(repo(const MemberAccess(role: Role.manager)).store(tenantId: tenantId, type: DocumentType.nid, bytes: _image, extension: 'jpg'), throwsA(isA<PermissionDenied>()));
+    await expectLater(
+      repo(const MemberAccess(role: Role.manager)).store(tenantId: tenantId, type: DocumentType.nid, bytes: _image, extension: 'jpg'),
+      throwsA(isA<PermissionDenied>()),
+    );
     for (final role in [Role.caretaker, Role.tenant]) {
-      await expectLater(repo(MemberAccess(role: role)).store(tenantId: tenantId, type: DocumentType.photo, bytes: _image, extension: 'jpg'), throwsA(isA<PermissionDenied>()));
+      await expectLater(
+        repo(MemberAccess(role: role)).store(tenantId: tenantId, type: DocumentType.photo, bytes: _image, extension: 'jpg'),
+        throwsA(isA<PermissionDenied>()),
+      );
     }
   });
 
   test('staff without vault access see only the tenant photo; vault staff and the tenant see all', () async {
     final photo = await repo(owner).store(tenantId: tenantId, type: DocumentType.photo, bytes: _image, extension: 'jpg');
     final nid = await repo(owner).store(tenantId: tenantId, type: DocumentType.nid, bytes: _image, extension: 'jpg');
+
     for (final role in [Role.manager, Role.caretaker]) {
       final seen = await repo(MemberAccess(role: role)).list(tenantId);
       expect(seen.map((d) => d.id), [photo]);
@@ -107,7 +116,7 @@ void main() {
     final bytes = fileA.readAsBytesSync()..[40] ^= 1;
     fileA.writeAsBytesSync(bytes);
     await expectLater(repo(owner).read(a), throwsA(isA<DocumentTamperedException>()));
-    fileA.writeAsBytesSync(fileB.readAsBytesSync());
+    fileA.writeAsBytesSync(fileB.readAsBytesSync()); // another document's file under this id
     await expectLater(repo(owner).read(a), throwsA(isA<DocumentTamperedException>()));
     fileA.deleteSync();
     await expectLater(repo(owner).read(a), throwsStateError);
@@ -116,14 +125,23 @@ void main() {
   test('a lost vault key never creates a new key when documents exist', () async {
     await repo(owner).store(tenantId: tenantId, type: DocumentType.nid, bytes: _image, extension: 'jpg');
     final lost = MemoryKeyValueStore();
-    await expectLater(documentsFor(db, owner, root, keyStore: lost).store(tenantId: tenantId, type: DocumentType.nid, bytes: _image, extension: 'jpg'), throwsA(isA<VaultKeyMissingException>()));
+    await expectLater(
+      documentsFor(db, owner, root, keyStore: lost).store(tenantId: tenantId, type: DocumentType.nid, bytes: _image, extension: 'jpg'),
+      throwsA(isA<VaultKeyMissingException>()),
+    );
     expect(await lost.read('vault_key_v1'), isNull);
   });
 
   test('removing needs owner/admin and a confirmation for that document; it is archived and audited', () async {
     final id = await repo(owner).store(tenantId: tenantId, type: DocumentType.nid, bytes: _image, extension: 'jpg');
-    await expectLater(repo(vaultStaff).remove(id, reason: 'x', confirmation: await confirmed(SensitiveAction.documentRemove, id)), throwsA(isA<PermissionDenied>()));
-    await expectLater(repo(owner).remove(id, reason: 'x', confirmation: await confirmed(SensitiveAction.documentRemove, 'another')), throwsA(isA<ConfirmationException>()));
+    await expectLater(
+      repo(vaultStaff).remove(id, reason: 'x', confirmation: await confirmed(SensitiveAction.documentRemove, id)),
+      throwsA(isA<PermissionDenied>()),
+    );
+    await expectLater(
+      repo(owner).remove(id, reason: 'x', confirmation: await confirmed(SensitiveAction.documentRemove, 'another')),
+      throwsA(isA<ConfirmationException>()),
+    );
     await repo(owner).remove(id, reason: 'wrong scan', confirmation: await confirmed(SensitiveAction.documentRemove, id));
     expect(await repo(owner).list(tenantId), isEmpty);
     expect(await db.select(db.deletedArchives).get(), hasLength(1));
@@ -138,3 +156,4 @@ void main() {
     expect(audit.newValue, allOf(contains('nid'), isNot(contains('vault/'))));
   });
 }
+

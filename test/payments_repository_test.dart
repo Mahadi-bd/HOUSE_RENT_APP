@@ -15,13 +15,13 @@ void main() {
 
   setUp(() async {
     db = memoryDb();
-    final ids = await seedTenant(db);
+    final ids = await seedTenant(db); // rent 10,000 BDT, lease from Sep, "now" is Nov 10
     tenantId = ids.tenantId;
     propertyId = ids.propertyId;
   });
   tearDown(() => db.close());
 
-  const owner = ownerAccess;
+  final owner = ownerAccess;
 
   test('rent owed since the lease start is three months (Sep, Oct, Nov)', () async {
     final ledger = await paymentsFor(db, owner).ledgerFor(tenantId);
@@ -108,7 +108,7 @@ void main() {
       expect(await db.select(db.payments).get(), isEmpty);
     });
 
-    test('mobile money needs a transaction id, and it cannot be used twice for the same provider', () async {
+    test('mobile money needs a transaction id, and it cannot be used twice', () async {
       final repo = paymentsFor(db, owner);
       await expectLater(
         repo.record(tenantId: tenantId, amount: 1000, method: PaymentMethod.bkash),
@@ -116,7 +116,7 @@ void main() {
       );
       await repo.record(tenantId: tenantId, amount: 1000, method: PaymentMethod.bkash, trxId: 'AB12CD');
       await expectLater(
-        repo.record(tenantId: tenantId, amount: 1000, method: PaymentMethod.bkash, trxId: 'AB12CD'),
+        repo.record(tenantId: tenantId, amount: 1000, method: PaymentMethod.nagad, trxId: 'AB12CD'),
         throwsStateError,
       );
       expect(await db.select(db.payments).get(), hasLength(1));
@@ -178,6 +178,7 @@ void main() {
         );
       }
       final repo = paymentsFor(db, owner);
+      // Token for another record / another action is refused.
       await expectLater(
         repo.editPayment(
           r.paymentId,
@@ -194,6 +195,7 @@ void main() {
         ),
         throwsA(isA<ConfirmationException>()),
       );
+      // A token works once only.
       final token = await confirmed(SensitiveAction.paymentEdit, r.paymentId);
       await repo.editPayment(r.paymentId, amount: 999999, confirmation: token);
       await expectLater(
