@@ -5,31 +5,37 @@
 String? normalizeBdPhone(String input) {
   final trimmed = input.trim();
   final hadPlus = trimmed.startsWith('+');
-  const bengali = '০১২৩৪৫৬৭৮৯';
-  var digits = trimmed;
-  for (var i = 0; i < 10; i++) {
-    digits = digits.replaceAll(bengali[i], '$i');
+  // Keep only digits. English, Bengali and Hindi digits all become 0-9. Everything else is dropped.
+  final buffer = StringBuffer();
+  for (final rune in trimmed.runes) {
+    if (rune >= 0x30 && rune <= 0x39) {
+      buffer.writeCharCode(rune);
+    } else if (rune >= 0x09E6 && rune <= 0x09EF) {
+      buffer.writeCharCode(0x30 + rune - 0x09E6);
+    } else if (rune >= 0x0966 && rune <= 0x096F) {
+      buffer.writeCharCode(0x30 + rune - 0x0966);
+    }
   }
-  digits = digits.replaceAll(RegExp(r'\D'), '');
+  var digits = buffer.toString();
   if (digits.isEmpty) {
     return null;
   }
-
-  // Bangladesh's international form is +880 followed by a 10-digit mobile number.
-  // Accept 00-prefixed international dialing and common local forms as well.
-  if (digits.startsWith('00')) {
+  if (digits.startsWith('00880')) {
     digits = digits.substring(2);
   }
-  if (digits.startsWith('8801') && RegExp(r'^8801[3-9]\d{8}$').hasMatch(digits)) {
-    return digits;
+  if (digits.startsWith('0') && digits.length == 11) {
+    digits = '880${digits.substring(1)}';
+  } else if (digits.length == 10 && digits.startsWith('1')) {
+    digits = '880$digits';
   }
-  if (digits.startsWith('01') && RegExp(r'^01[3-9]\d{8}$').hasMatch(digits)) {
-    return '88${digits.substring(1)}';
+  // Bangladesh mobile: 880 1 [3-9] and 8 more digits (13 digits in all).
+  if (digits.length == 13 && digits.startsWith('8801')) {
+    final operator = digits.codeUnitAt(4) - 0x30;
+    if (operator >= 3 && operator <= 9) {
+      return digits;
+    }
   }
-  if (digits.length == 10 && RegExp(r'^1[3-9]\d{8}$').hasMatch(digits)) {
-    return '880$digits';
-  }
-  if (hadPlus && !digits.startsWith('880') && RegExp(r'^\d{8,15}$').hasMatch(digits)) {
+  if (hadPlus && !digits.startsWith('880') && digits.length >= 8 && digits.length <= 15) {
     return digits;
   }
   return null;

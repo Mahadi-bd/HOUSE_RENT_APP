@@ -20,14 +20,6 @@ class AppFormatters {
     }
   }
 
-  String _localizeDigits(String value) {
-    if (languageCode != 'bn') {
-      return value;
-    }
-    const bengaliDigits = '০১২৩৪৫৬৭৮৯';
-    return value.replaceAllMapped(RegExp(r'\d'), (match) => bengaliDigits[int.parse(match[0]!)]);
-  }
-
   /// Taka amount with the ৳ symbol. Shows poisha only when there are any.
   String money(int poisha) {
     final negative = poisha < 0;
@@ -46,14 +38,14 @@ class AppFormatters {
   /// A plain whole number with local digits and grouping.
   String number(int value) => NumberFormat.decimalPattern(_locale).format(value);
 
-  /// A date such as "10 November 2026" in the app language.
-  String date(DateTime value) => _localizeDigits(DateFormat.yMMMMd(_locale).format(value));
+  /// A date such as "10 Nov 2026" in the app language.
+  String date(DateTime value) => DateFormat.yMMMd(_locale).format(value);
 
   /// A month label from "2026-11", such as "November 2026" in the app language.
   String monthLabel(String yyyyMm) {
     final parts = yyyyMm.split('-');
     final year = int.parse(parts[0]);
     final month = int.parse(parts[1]);
-    return _localizeDigits(DateFormat.yMMMM(_locale).format(DateTime(year, month)));
+    return DateFormat.yMMMM(_locale).format(DateTime(year, month));
   }
 }

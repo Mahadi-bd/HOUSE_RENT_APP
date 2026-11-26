@@ -5,9 +5,6 @@ abstract final class BrandConfig {
   /// Brand name.
   static const companyName = 'LIFE EASY';
 
-  /// Backward-compatible name used by the About screen.
-  static const brandName = companyName;
-
   /// Developer and designer credit.
   static const developerName = 'MAHADI HASAN JEWEL';
 
